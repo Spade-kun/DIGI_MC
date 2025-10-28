@@ -59,6 +59,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/{folderId}', [App\Http\Controllers\UserDocumentsController::class, 'show'])->name('show');
         Route::post('/{folderId}/attempt-access', [App\Http\Controllers\UserDocumentsController::class, 'attemptAccess'])->name('attempt-access');
     });
+    
+    // User Gazette Routes
+    Route::prefix('user/gazette')->name('user.gazette.')->group(function () {
+        Route::get('/', [App\Http\Controllers\User\UserGazetteController::class, 'index'])->name('index');
+        Route::get('/{gazette}', [App\Http\Controllers\User\UserGazetteController::class, 'show'])->name('show');
+    });
 });
 
 // Admin Routes
@@ -86,6 +92,21 @@ Route::prefix('admin')->group(function () {
             Route::put('/users/{user}', [App\Http\Controllers\AdminPrivilegeController::class, 'update'])->name('update');
             Route::post('/users/{user}/toggle-access', [App\Http\Controllers\AdminPrivilegeController::class, 'toggleAccess'])->name('toggle-access');
             Route::get('/folders', [App\Http\Controllers\AdminPrivilegeController::class, 'getFolders'])->name('folders');
+        });
+        
+        // Role & Privilege Management Routes
+        Route::prefix('roles')->name('admin.roles.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\RoleController::class, 'index'])->name('index');
+            Route::get('/{user}/edit', [App\Http\Controllers\Admin\RoleController::class, 'edit'])->name('edit');
+            Route::put('/{user}', [App\Http\Controllers\Admin\RoleController::class, 'update'])->name('update');
+        });
+        
+        // Gazette Management Routes
+        Route::prefix('gazette')->name('admin.gazette.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\GazetteController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\Admin\GazetteController::class, 'store'])->name('store');
+            Route::delete('/{gazette}', [App\Http\Controllers\Admin\GazetteController::class, 'destroy'])->name('destroy');
+            Route::get('/{gazette}/download', [App\Http\Controllers\Admin\GazetteController::class, 'download'])->name('download');
         });
     });
 });

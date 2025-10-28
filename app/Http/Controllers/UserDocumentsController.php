@@ -50,8 +50,14 @@ class UserDocumentsController extends Controller
      */
     public function show(Request $request, string $folderId)
     {
-        // Simply redirect to Google Drive folder
-        // All users can see all folders
+        $user = Auth::user();
+
+        // Check if user has access to this folder
+        if (!$user->hasAccessToFolder($folderId)) {
+            return back()->with('error', 'You do not have permission to access this folder.');
+        }
+
+        // Redirect to Google Drive folder
         $driveLink = "https://drive.google.com/drive/folders/{$folderId}";
         return redirect()->away($driveLink);
     }

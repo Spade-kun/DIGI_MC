@@ -20,6 +20,10 @@ class UserFolderPrivilege extends Model
         'folder_id',
         'folder_name',
         'can_access',
+        'can_add',
+        'can_edit',
+        'can_view',
+        'can_delete',
     ];
 
     /**
@@ -29,6 +33,10 @@ class UserFolderPrivilege extends Model
      */
     protected $casts = [
         'can_access' => 'boolean',
+        'can_add' => 'boolean',
+        'can_edit' => 'boolean',
+        'can_view' => 'boolean',
+        'can_delete' => 'boolean',
     ];
 
     /**
