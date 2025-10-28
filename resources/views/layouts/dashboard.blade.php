@@ -165,6 +165,11 @@
     </div>
   </main>
 
+  <!-- Chatbot Widget (Only for regular users, not admins) -->
+  @if(Auth::guard('web')->check())
+    @include('components.chatbot')
+  @endif
+
   <!--   Core JS Files   -->
   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>

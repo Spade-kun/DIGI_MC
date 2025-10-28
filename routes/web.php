@@ -65,6 +65,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [App\Http\Controllers\User\UserGazetteController::class, 'index'])->name('index');
         Route::get('/{gazette}', [App\Http\Controllers\User\UserGazetteController::class, 'show'])->name('show');
     });
+    
+    // Dialogflow Chatbot API
+    Route::post('/api/dialogflow', [App\Http\Controllers\Api\DialogflowController::class, 'handleMessage'])->name('api.dialogflow');
 });
 
 // Admin Routes
