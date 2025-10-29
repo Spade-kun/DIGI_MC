@@ -52,7 +52,15 @@
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-folder-17 text-info text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Documents</span>
+            <span class="nav-link-text ms-1">Drive Documents</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('user.my-documents.*') ? 'active' : '' }}" href="{{ route('user.my-documents.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-single-copy-04 text-success text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">My Documents</span>
           </a>
         </li>
         <li class="nav-item">
@@ -109,6 +117,14 @@
               <i class="ni ni-book-bookmark text-primary text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Gazette</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.user-documents.*') ? 'active' : '' }}" href="{{ route('admin.user-documents.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-single-copy-04 text-success text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">User Documents</span>
           </a>
         </li>
         @endif

@@ -58,8 +58,11 @@ class RoleController extends Controller
         });
 
         $roles = [
-            'Legal Assistant I',
             'City Legal Officer',
+            'Acting Assistant Legal Officer',
+            'Administrative Officer V',
+            'Legal Assistant II',
+            'Community Affairs Assistant II',
         ];
 
         return view('admin.roles.edit', compact('user', 'foldersWithAccess', 'roles'));

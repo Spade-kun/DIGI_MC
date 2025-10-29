@@ -66,6 +66,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/{gazette}', [App\Http\Controllers\User\UserGazetteController::class, 'show'])->name('show');
     });
     
+    // User My Documents Routes
+    Route::prefix('user/my-documents')->name('user.my-documents.')->group(function () {
+        Route::get('/', [App\Http\Controllers\User\UserDocumentController::class, 'index'])->name('index');
+        Route::post('/', [App\Http\Controllers\User\UserDocumentController::class, 'store'])->name('store');
+        Route::put('/{document}/approve', [App\Http\Controllers\User\UserDocumentController::class, 'approve'])->name('approve');
+        Route::put('/{document}/reject', [App\Http\Controllers\User\UserDocumentController::class, 'reject'])->name('reject');
+        Route::get('/{document}/download', [App\Http\Controllers\User\UserDocumentController::class, 'download'])->name('download');
+        Route::delete('/{document}', [App\Http\Controllers\User\UserDocumentController::class, 'destroy'])->name('destroy');
+    });
+    
     // Dialogflow Chatbot API
     Route::post('/api/dialogflow', [App\Http\Controllers\Api\DialogflowController::class, 'handleMessage'])->name('api.dialogflow');
 });
@@ -110,6 +120,15 @@ Route::prefix('admin')->group(function () {
             Route::post('/', [App\Http\Controllers\Admin\GazetteController::class, 'store'])->name('store');
             Route::delete('/{gazette}', [App\Http\Controllers\Admin\GazetteController::class, 'destroy'])->name('destroy');
             Route::get('/{gazette}/download', [App\Http\Controllers\Admin\GazetteController::class, 'download'])->name('download');
+        });
+        
+        // User Documents Management Routes (Admin)
+        Route::prefix('user-documents')->name('admin.user-documents.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'index'])->name('index');
+            Route::put('/{document}/approve', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'approve'])->name('approve');
+            Route::put('/{document}/reject', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'reject'])->name('reject');
+            Route::get('/{document}/download', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'download'])->name('download');
+            Route::delete('/{document}', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'destroy'])->name('destroy');
         });
     });
 });

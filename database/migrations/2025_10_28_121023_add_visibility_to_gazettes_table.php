@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('gazettes', function (Blueprint $table) {
-            $table->string('visibility')->default('public')->after('file_name'); // public or private
+            //
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('gazettes', function (Blueprint $table) {
-            $table->dropColumn('visibility');
+            //
         });
     }
 };
