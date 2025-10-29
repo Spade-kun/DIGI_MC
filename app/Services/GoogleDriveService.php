@@ -2,64 +2,140 @@
 
 namespace App\Services;
 
+use Google\Client;
+use Google\Service\Drive;
+use Google\Service\Drive\DriveFile;
+use Illuminate\Support\Facades\Storage;
+use Exception;
+
 class GoogleDriveService
 {
-    /**
-     * Simple Google Drive folder management
-     * Just add your folder IDs and names here - no API needed!
-     * 
-     * To get folder ID from Google Drive:
-     * 1. Open the folder in Google Drive
-     * 2. Look at the URL: https://drive.google.com/drive/folders/YOUR_FOLDER_ID_HERE
-     * 3. Copy the ID after "/folders/"
-     */
+    protected $client;
+    protected $service;
 
-    /**
-     * Get all configured folders
-     * 
-     * @return array
-     */
-    public function listFolders(): array
+    public function __construct()
     {
-        // Add your folders here!
-        // Get the folder ID from the URL when you open a folder in Google Drive
-        return [
-            [
-                'id' => '1vLh0c7yQ4dF7jeXOFPWfshCPoH_NsyAH',  // Your actual folder ID
-                'name' => 'Documents',
-                'drive_link' => 'https://drive.google.com/drive/folders/1vLh0c7yQ4dF7jeXOFPWfshCPoH_NsyAH',
-            ],
-            // Add more folders below - just copy the pattern above
-            // Example:
-            [
-                'id' => '1_bRejAWEKDXKTIRS3PywDWLoCjweBSYX',
-                'name' => 'Records',
-                'drive_link' => 'https://drive.google.com/drive/folders/1_bRejAWEKDXKTIRS3PywDWLoCjweBSYX',
-            ],
-        ];
-    }
-
-    /**
-     * Get folder information
-     */
-    public function getFolder(string $folderId): ?array
-    {
-        $folders = $this->listFolders();
-        
-        foreach ($folders as $folder) {
-            if ($folder['id'] === $folderId) {
-                return $folder;
+        try {
+            $this->client = new Client();
+            $credentialsPath = storage_path('app/google/credentials.json');
+            
+            if (!file_exists($credentialsPath)) {
+                throw new Exception("Google credentials file not found at: {$credentialsPath}");
             }
+
+            $this->client->setAuthConfig($credentialsPath);
+            $this->client->addScope(Drive::DRIVE_FILE);
+            $this->client->setAccessType('offline');
+            
+            $this->service = new Drive($this->client);
+        } catch (Exception $e) {
+            \Log::error('GoogleDriveService initialization failed: ' . $e->getMessage());
+            $this->service = null;
         }
-        
-        return null;
     }
 
     /**
-     * Build Google Drive folder link
+     * Upload a file to Google Drive
+     * 
+     * @param string $filePath Local file path
+     * @param string $fileName Name for the file in Google Drive
+     * @param string $folderId Google Drive folder ID
+     * @param string $mimeType File MIME type
+     * @return string|null Google Drive file ID or null on failure
      */
-    public function getFolderLink(string $folderId): string
+    public function uploadFile($filePath, $fileName, $folderId, $mimeType = 'application/pdf')
     {
-        return "https://drive.google.com/drive/folders/{$folderId}";
+        if (!$this->service) {
+            \Log::warning('Google Drive service not initialized. File will only be stored locally.');
+            return null;
+        }
+
+        try {
+            // Check if file exists
+            if (!file_exists($filePath)) {
+                throw new Exception("File not found: {$filePath}");
+            }
+
+            // Create file metadata
+            $fileMetadata = new DriveFile([
+                'name' => $fileName,
+                'parents' => [$folderId]
+            ]);
+
+            // Upload file
+            $content = file_get_contents($filePath);
+            $file = $this->service->files->create(
+                $fileMetadata,
+                [
+                    'data' => $content,
+                    'mimeType' => $mimeType,
+                    'uploadType' => 'multipart',
+                    'fields' => 'id'
+                ]
+            );
+
+            \Log::info('File uploaded to Google Drive successfully', [
+                'file_name' => $fileName,
+                'drive_file_id' => $file->id,
+                'folder_id' => $folderId
+            ]);
+
+            return $file->id;
+
+        } catch (Exception $e) {
+            \Log::error('Google Drive upload failed: ' . $e->getMessage(), [
+                'file_path' => $filePath,
+                'file_name' => $fileName,
+                'folder_id' => $folderId
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * Delete a file from Google Drive
+     * 
+     * @param string $fileId Google Drive file ID
+     * @return bool Success status
+     */
+    public function deleteFile($fileId)
+    {
+        if (!$this->service || !$fileId) {
+            return false;
+        }
+
+        try {
+            $this->service->files->delete($fileId);
+            \Log::info('File deleted from Google Drive', ['file_id' => $fileId]);
+            return true;
+        } catch (Exception $e) {
+            \Log::error('Google Drive delete failed: ' . $e->getMessage(), ['file_id' => $fileId]);
+            return false;
+        }
+    }
+
+    /**
+     * Check if Google Drive service is available
+     * 
+     * @return bool
+     */
+    public function isAvailable()
+    {
+        return $this->service !== null;
+    }
+
+    /**
+     * Get file download URL
+     * 
+     * @param string $fileId Google Drive file ID
+     * @return string|null
+     */
+    public function getFileUrl($fileId)
+    {
+        if (!$fileId) {
+            return null;
+        }
+
+        return "https://drive.google.com/file/d/{$fileId}/view";
     }
 }

@@ -301,20 +301,37 @@ class DocumentController extends Controller
     }
     
     /**
-     * Upload file to Google Drive
+     * Upload file to Google Drive with category-specific folder
      */
     private function uploadToGoogleDrive($document)
     {
         try {
             $client = new \Google_Client();
-            $client->setAuthConfig(storage_path('app/google-drive-credentials.json'));
+            
+            // Use the same credentials path as admin
+            $credentialsPath = config('services.google.credentials_path');
+            
+            // If path is relative, make it absolute
+            if (!file_exists($credentialsPath)) {
+                $credentialsPath = storage_path('app/google/credentials.json');
+            }
+            
+            if (!file_exists($credentialsPath)) {
+                throw new \Exception('Google credentials not found at: ' . $credentialsPath);
+            }
+            
+            $client->setAuthConfig($credentialsPath);
             $client->addScope(\Google_Service_Drive::DRIVE_FILE);
             
             $service = new \Google_Service_Drive($client);
             
+            // Get category-specific folder ID from config
+            $folderIds = config('googledrive.folder_ids', []);
+            $folderId = $folderIds[$document->category] ?? config('googledrive.default_folder_id');
+            
             $fileMetadata = new \Google_Service_Drive_DriveFile([
                 'name' => $document->file_name,
-                'parents' => ['1vLh0c7yQ4dF7jeXOFPWfshCPoH_NsyAH']
+                'parents' => [$folderId]
             ]);
             
             $filePath = storage_path('app/public/' . $document->file_path);
