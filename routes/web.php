@@ -53,11 +53,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/logout', [UserAuthController::class, 'logout'])->name('user.logout');
     Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // User Documents Routes
+    // User Documents Routes (Admin Documents Access)
     Route::prefix('user/documents')->name('user.documents.')->group(function () {
-        Route::get('/', [App\Http\Controllers\UserDocumentsController::class, 'index'])->name('index');
-        Route::get('/{folderId}', [App\Http\Controllers\UserDocumentsController::class, 'show'])->name('show');
-        Route::post('/{folderId}/attempt-access', [App\Http\Controllers\UserDocumentsController::class, 'attemptAccess'])->name('attempt-access');
+        Route::get('/', [App\Http\Controllers\User\DocumentController::class, 'index'])->name('index');
+        Route::get('/category/{category}', [App\Http\Controllers\User\DocumentController::class, 'showCategory'])->name('category');
+        Route::post('/store', [App\Http\Controllers\User\DocumentController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [App\Http\Controllers\User\DocumentController::class, 'update'])->name('update');
+        Route::get('/view/{id}', [App\Http\Controllers\User\DocumentController::class, 'view'])->name('view');
+        Route::get('/download/{id}', [App\Http\Controllers\User\DocumentController::class, 'download'])->name('download');
     });
     
     // User Gazette Routes
@@ -134,7 +137,9 @@ Route::prefix('admin')->group(function () {
         // Admin Documents Management Routes
         Route::prefix('documents')->name('admin.documents.')->group(function () {
             Route::get('/', [App\Http\Controllers\Admin\AdminDocumentController::class, 'index'])->name('index');
+            Route::get('/category/{category}', [App\Http\Controllers\Admin\AdminDocumentController::class, 'showCategory'])->name('category');
             Route::post('/', [App\Http\Controllers\Admin\AdminDocumentController::class, 'store'])->name('store');
+            Route::put('/{document}/update', [App\Http\Controllers\Admin\AdminDocumentController::class, 'update'])->name('update');
             Route::delete('/{document}', [App\Http\Controllers\Admin\AdminDocumentController::class, 'destroy'])->name('destroy');
             Route::get('/{document}/download', [App\Http\Controllers\Admin\AdminDocumentController::class, 'download'])->name('download');
         });

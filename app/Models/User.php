@@ -58,6 +58,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the document privileges for the user.
+     */
+    public function documentPrivileges(): HasMany
+    {
+        return $this->hasMany(UserDocumentPrivilege::class);
+    }
+
+    /**
      * Check if user has access to a specific folder.
      */
     public function hasAccessToFolder(string $folderId): bool
@@ -67,6 +75,22 @@ class User extends Authenticatable
             ->first();
 
         // If no privilege exists, deny access by default
+        if (!$privilege) {
+            return false;
+        }
+
+        return $privilege->can_access;
+    }
+
+    /**
+     * Check if user has access to a specific document.
+     */
+    public function hasAccessToDocument(int $documentId): bool
+    {
+        $privilege = $this->documentPrivileges()
+            ->where('admin_document_id', $documentId)
+            ->first();
+
         if (!$privilege) {
             return false;
         }

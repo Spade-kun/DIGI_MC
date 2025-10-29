@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('header', 'Drive Documents')
+@section('header', 'Documents')
 
 @section('content')
 <div class="row">
@@ -25,48 +25,101 @@
 
         <div class="card">
             <div class="card-header pb-0">
-                <div>
-                    <h6>Google Drive Folders</h6>
-                    <p class="text-sm mb-0">Access your authorized document folders</p>
-                </div>
+                <h6>Document Folders</h6>
+                <p class="text-sm mb-0">Access documents based on your assigned permissions</p>
             </div>
             <div class="card-body">
                 <div class="row">
                     @forelse($folders as $folder)
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card folder-card {{ $folder['has_access'] ? 'authorized' : 'unauthorized' }}">
-                                <div class="card-body text-center">
-                                    <div class="folder-icon mb-3">
-                                        <i class="fas fa-folder fa-4x {{ $folder['has_access'] ? 'text-warning' : 'text-secondary' }}"></i>
-                                        @if(!$folder['has_access'])
-                                            <i class="fas fa-lock lock-overlay"></i>
+                        <div class="col-lg-4 col-md-6 col-12 mb-4">
+                            <div class="folder-card {{ $folder['is_locked'] ? 'locked' : '' }}" 
+                                 onclick="{{ $folder['is_locked'] ? '' : 'window.location.href=\'' . route('user.documents.category', $folder['category']) . '\'' }}">
+                                <div class="card h-100 {{ $folder['is_locked'] ? 'border-danger' : 'border-primary' }}">
+                                    <div class="card-body text-center">
+                                        <!-- Folder Icon -->
+                                        <div class="folder-icon mb-3">
+                                            @if($folder['is_locked'])
+                                                <i class="fas fa-folder-lock fa-4x text-danger"></i>
+                                            @else
+                                                <i class="fas fa-folder-open fa-4x text-warning"></i>
+                                            @endif
+                                        </div>
+
+                                        <!-- Folder Name -->
+                                        <h5 class="mb-2">{{ $folder['category'] }}</h5>
+
+                                        <!-- Document Count -->
+                                        <div class="mb-3">
+                                            @if($folder['is_locked'])
+                                                <span class="badge bg-gradient-danger">
+                                                    <i class="fas fa-lock"></i> Unauthorized
+                                                </span>
+                                            @else
+                                                <span class="badge bg-gradient-success">
+                                                    <i class="fas fa-check-circle"></i> Authorized
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <!-- Stats -->
+                                        <div class="text-sm text-secondary mb-3">
+                                            @if($folder['is_locked'])
+                                                <p class="mb-0">
+                                                    <i class="fas fa-file-alt"></i> {{ $folder['total_documents'] }} {{ Str::plural('document', $folder['total_documents']) }}
+                                                </p>
+                                                <p class="text-danger mb-0">
+                                                    <i class="fas fa-ban"></i> No access
+                                                </p>
+                                            @else
+                                                <p class="mb-0">
+                                                    <i class="fas fa-file-alt"></i> {{ $folder['accessible_documents'] }} of {{ $folder['total_documents'] }} accessible
+                                                </p>
+                                            @endif
+                                        </div>
+
+                                        <!-- Permissions -->
+                                        @if(!$folder['is_locked'])
+                                            <div class="permissions-badges">
+                                                @if($folder['can_add'])
+                                                    <span class="badge badge-sm bg-gradient-success me-1">
+                                                        <i class="fas fa-plus"></i> Add
+                                                    </span>
+                                                @endif
+                                                @if($folder['can_view'])
+                                                    <span class="badge badge-sm bg-gradient-primary me-1">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </span>
+                                                @endif
+                                                @if($folder['can_edit'])
+                                                    <span class="badge badge-sm bg-gradient-info">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </span>
+                                                @endif
+                                            </div>
                                         @endif
+
+                                        <!-- Action Button -->
+                                        <div class="mt-3">
+                                            @if($folder['is_locked'])
+                                                <button class="btn btn-sm btn-outline-danger" disabled>
+                                                    <i class="fas fa-lock"></i> Locked
+                                                </button>
+                                            @else
+                                                <a href="{{ route('user.documents.category', $folder['category']) }}" 
+                                                   class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-folder-open"></i> Open Folder
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
-                                    <h6 class="mb-3">{{ $folder['name'] }}</h6>
-                                    
-                                    @if($folder['has_access'])
-                                        <a href="{{ route('user.documents.show', $folder['id']) }}" 
-                                           class="btn btn-primary btn-sm w-100"
-                                           target="_blank">
-                                            <i class="fas fa-external-link-alt"></i> Open in Drive
-                                        </a>
-                                        <span class="badge bg-gradient-success mt-2 w-100">Authorized</span>
-                                    @else
-                                        <button class="btn btn-secondary btn-sm w-100" 
-                                                onclick="showUnauthorizedMessage('{{ $folder['name'] }}')"
-                                                disabled>
-                                            <i class="fas fa-lock"></i> No Access
-                                        </button>
-                                        <span class="badge bg-gradient-danger mt-2 w-100">Unauthorized</span>
-                                    @endif
                                 </div>
                             </div>
                         </div>
                     @empty
                         <div class="col-12">
                             <div class="alert alert-info text-center">
-                                <i class="fas fa-info-circle fa-2x mb-3"></i>
-                                <p class="mb-0">No folders available at the moment.</p>
+                                <i class="fas fa-info-circle fa-2x mb-2"></i>
+                                <p class="mb-0">No document folders available.</p>
                             </div>
                         </div>
                     @endforelse
@@ -78,47 +131,49 @@
 
 <style>
 .folder-card {
-    transition: all 0.3s ease;
-    border: 2px solid #e9ecef;
-    height: 100%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-.folder-card.authorized {
-    border-color: #2dce89;
-    background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
+.folder-card:not(.locked):hover {
+    transform: translateY(-5px);
 }
 
-.folder-card.unauthorized {
-    border-color: #f5365c;
-    background: linear-gradient(135deg, #fff 0%, #fef2f2 100%);
+.folder-card.locked {
+    cursor: not-allowed;
     opacity: 0.7;
 }
 
-.folder-card:hover.authorized {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(45, 206, 137, 0.2);
-}
-
 .folder-icon {
-    position: relative;
-    display: inline-block;
+    animation: fadeIn 0.5s ease-in;
 }
 
-.lock-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    color: #f5365c;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card {
+    border-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.folder-card:not(.locked) .card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.permissions-badges {
+    min-height: 24px;
 }
 </style>
 
 <script>
-function showUnauthorizedMessage(folderName) {
-    alert('You do not have permission to access "' + folderName + '" folder.\n\nPlease contact the administrator to request access.');
-}
-
 // Auto-dismiss alerts
 setTimeout(function() {
     const alerts = document.querySelectorAll('.alert');

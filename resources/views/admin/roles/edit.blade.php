@@ -42,31 +42,34 @@
 
                     <hr class="horizontal dark">
 
-                    <!-- Folder Access -->
+                    <!-- Document Access -->
                     <div class="row">
                         <div class="col-md-12">
                             <h6 class="mb-3">Folder Access Permissions</h6>
                             <p class="text-sm text-muted mb-3">Select which folders this user can access</p>
 
                             <div class="row">
-                                @forelse($foldersWithAccess as $folder)
+                                @forelse($foldersByCategory as $folder)
                                     <div class="col-md-12 mb-3">
                                         <div class="card folder-access-card {{ $folder['has_access'] ? 'border-success' : '' }}" 
-                                             data-folder-id="{{ $folder['id'] }}">
+                                             data-folder-category="{{ $folder['category'] }}">
                                             <div class="card-body p-3">
                                                 <!-- Main Folder Access Checkbox -->
                                                 <div class="form-check mb-3">
                                                     <input class="form-check-input folder-main-checkbox" 
                                                            type="checkbox" 
                                                            name="folders[]" 
-                                                           value="{{ $folder['id'] }}"
-                                                           id="folder_{{ $folder['id'] }}"
+                                                           value="{{ $folder['category'] }}"
+                                                           id="folder_{{ Str::slug($folder['category']) }}"
                                                            {{ $folder['has_access'] ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="folder_{{ $folder['id'] }}">
+                                                    <label class="form-check-label" for="folder_{{ Str::slug($folder['category']) }}">
                                                         <div class="d-flex align-items-center">
                                                             <i class="fa fa-folder text-warning fa-2x me-3"></i>
                                                             <div>
-                                                                <h6 class="mb-0">{{ $folder['name'] }}</h6>
+                                                                <h6 class="mb-0">{{ $folder['category'] }}</h6>
+                                                                <div class="text-xs text-secondary">
+                                                                    {{ $folder['document_count'] }} {{ Str::plural('document', $folder['document_count']) }}
+                                                                </div>
                                                                 <span class="text-xs {{ $folder['has_access'] ? 'text-success' : 'text-secondary' }}">
                                                                     {{ $folder['has_access'] ? 'Authorized' : 'Unauthorized' }}
                                                                 </span>
@@ -75,59 +78,49 @@
                                                     </label>
                                                 </div>
 
-                                                <!-- CRUD Permissions -->
-                                                <div class="crud-permissions ms-5 {{ !$folder['has_access'] ? 'disabled' : '' }}" 
-                                                     id="crud_{{ $folder['id'] }}">
+                                                <!-- Folder Permissions -->
+                                                <div class="permissions ms-5 {{ !$folder['has_access'] ? 'disabled' : '' }}" 
+                                                     id="permissions_{{ Str::slug($folder['category']) }}">
                                                     <div class="row">
-                                                        <div class="col-md-3 col-6">
+                                                        <div class="col-md-4 col-12">
                                                             <div class="form-check">
-                                                                <input class="form-check-input crud-checkbox" 
+                                                                <input class="form-check-input permission-checkbox" 
                                                                        type="checkbox" 
-                                                                       name="add_{{ $folder['id'] }}"
-                                                                       id="add_{{ $folder['id'] }}"
+                                                                       name="add_{{ Str::slug($folder['category']) }}"
+                                                                       value="{{ $folder['category'] }}"
+                                                                       id="add_{{ Str::slug($folder['category']) }}"
                                                                        {{ $folder['can_add'] ? 'checked' : '' }}
                                                                        {{ !$folder['has_access'] ? 'disabled' : '' }}>
-                                                                <label class="form-check-label text-sm" for="add_{{ $folder['id'] }}">
+                                                                <label class="form-check-label text-sm" for="add_{{ Str::slug($folder['category']) }}">
                                                                     <i class="fa fa-plus-circle text-success"></i> Add
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3 col-6">
+                                                        <div class="col-md-4 col-12">
                                                             <div class="form-check">
-                                                                <input class="form-check-input crud-checkbox" 
+                                                                <input class="form-check-input permission-checkbox" 
                                                                        type="checkbox" 
-                                                                       name="edit_{{ $folder['id'] }}"
-                                                                       id="edit_{{ $folder['id'] }}"
-                                                                       {{ $folder['can_edit'] ? 'checked' : '' }}
-                                                                       {{ !$folder['has_access'] ? 'disabled' : '' }}>
-                                                                <label class="form-check-label text-sm" for="edit_{{ $folder['id'] }}">
-                                                                    <i class="fa fa-edit text-info"></i> Edit
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-6">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input crud-checkbox" 
-                                                                       type="checkbox" 
-                                                                       name="view_{{ $folder['id'] }}"
-                                                                       id="view_{{ $folder['id'] }}"
+                                                                       name="view_{{ Str::slug($folder['category']) }}"
+                                                                       value="{{ $folder['category'] }}"
+                                                                       id="view_{{ Str::slug($folder['category']) }}"
                                                                        {{ $folder['can_view'] ? 'checked' : '' }}
                                                                        {{ !$folder['has_access'] ? 'disabled' : '' }}>
-                                                                <label class="form-check-label text-sm" for="view_{{ $folder['id'] }}">
+                                                                <label class="form-check-label text-sm" for="view_{{ Str::slug($folder['category']) }}">
                                                                     <i class="fa fa-eye text-primary"></i> View
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3 col-6">
+                                                        <div class="col-md-4 col-12">
                                                             <div class="form-check">
-                                                                <input class="form-check-input crud-checkbox" 
+                                                                <input class="form-check-input permission-checkbox" 
                                                                        type="checkbox" 
-                                                                       name="delete_{{ $folder['id'] }}"
-                                                                       id="delete_{{ $folder['id'] }}"
-                                                                       {{ $folder['can_delete'] ? 'checked' : '' }}
+                                                                       name="edit_{{ Str::slug($folder['category']) }}"
+                                                                       value="{{ $folder['category'] }}"
+                                                                       id="edit_{{ Str::slug($folder['category']) }}"
+                                                                       {{ $folder['can_edit'] ? 'checked' : '' }}
                                                                        {{ !$folder['has_access'] ? 'disabled' : '' }}>
-                                                                <label class="form-check-label text-sm" for="delete_{{ $folder['id'] }}">
-                                                                    <i class="fa fa-trash text-danger"></i> Delete
+                                                                <label class="form-check-label text-sm" for="edit_{{ Str::slug($folder['category']) }}">
+                                                                    <i class="fa fa-edit text-info"></i> Edit
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -140,7 +133,7 @@
                                     <div class="col-12">
                                         <div class="alert alert-info">
                                             <i class="fa fa-info-circle"></i>
-                                            No folders available. Please add folders in GoogleDriveService.
+                                            No folders available.
                                         </div>
                                     </div>
                                 @endforelse
@@ -184,19 +177,19 @@
     border-color: #2dce89;
 }
 
-.crud-permissions {
+.permissions {
     padding: 10px;
     background-color: #f8f9fa;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
 
-.crud-permissions.disabled {
+.permissions.disabled {
     opacity: 0.4;
     pointer-events: none;
 }
 
-.crud-checkbox:disabled {
+.permission-checkbox:disabled {
     cursor: not-allowed;
 }
 </style>
@@ -206,21 +199,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle main folder checkbox changes
     document.querySelectorAll('.folder-main-checkbox').forEach(mainCheckbox => {
         mainCheckbox.addEventListener('change', function() {
-            const folderId = this.value;
+            const folderCategory = this.value;
             const card = this.closest('.folder-access-card');
-            const crudContainer = document.getElementById('crud_' + folderId);
-            const crudCheckboxes = crudContainer.querySelectorAll('.crud-checkbox');
+            const categorySlug = folderCategory.toLowerCase().replace(/\s+/g, '-');
+            const permissionsContainer = document.getElementById('permissions_' + categorySlug);
+            const permissionCheckboxes = permissionsContainer.querySelectorAll('.permission-checkbox');
             
             if (this.checked) {
-                // Authorized - enable CRUD checkboxes
+                // Authorized - enable and AUTO-CHECK all permission checkboxes
                 card.classList.add('border-success');
-                crudContainer.classList.remove('disabled');
-                crudCheckboxes.forEach(cb => cb.disabled = false);
+                permissionsContainer.classList.remove('disabled');
+                permissionCheckboxes.forEach(cb => {
+                    cb.disabled = false;
+                    cb.checked = true; // Automatically check all permissions
+                });
             } else {
-                // Unauthorized - disable and uncheck all CRUD checkboxes
+                // Unauthorized - disable and uncheck all permission checkboxes
                 card.classList.remove('border-success');
-                crudContainer.classList.add('disabled');
-                crudCheckboxes.forEach(cb => {
+                permissionsContainer.classList.add('disabled');
+                permissionCheckboxes.forEach(cb => {
                     cb.checked = false;
                     cb.disabled = true;
                 });

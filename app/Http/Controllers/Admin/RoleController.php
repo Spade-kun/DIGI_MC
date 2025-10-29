@@ -4,19 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserFolderPrivilege;
-use App\Services\GoogleDriveService;
+use App\Models\UserDocumentPrivilege;
+use App\Models\AdminDocument;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    protected GoogleDriveService $driveService;
-
-    public function __construct(GoogleDriveService $driveService)
-    {
-        $this->driveService = $driveService;
-    }
-
     /**
      * Display list of approved users with roles and privileges
      */
@@ -34,28 +27,48 @@ class RoleController extends Controller
      */
     public function edit(User $user)
     {
-        // Get all available folders
-        $folders = $this->driveService->listFolders();
+        // Define categories (folders)
+        $categories = ['Republic Act', 'Memorandum', 'Proclamations'];
 
-        // Get user's current folder privileges
-        $userPrivileges = $user->folderPrivileges()
+        // Get all available documents grouped by category
+        $documents = AdminDocument::orderBy('category')->orderBy('created_at', 'desc')->get();
+
+        // Get user's current document privileges
+        $userPrivileges = $user->documentPrivileges()
             ->get()
-            ->keyBy('folder_id');
+            ->keyBy('admin_document_id');
 
-        // Map folders with access status and CRUD permissions
-        $foldersWithAccess = collect($folders)->map(function ($folder) use ($userPrivileges) {
-            $privilege = $userPrivileges->get($folder['id']);
+        // Group documents by category with access status
+        $foldersByCategory = [];
+        foreach ($categories as $category) {
+            $categoryDocuments = $documents->where('category', $category);
             
-            return [
-                'id' => $folder['id'],
-                'name' => $folder['name'],
-                'has_access' => $privilege ? $privilege->can_access : false,
-                'can_add' => $privilege ? $privilege->can_add : false,
-                'can_edit' => $privilege ? $privilege->can_edit : false,
-                'can_view' => $privilege ? $privilege->can_view : false,
-                'can_delete' => $privilege ? $privilege->can_delete : false,
+            // Check folder-level permissions (if ANY document in folder has permission)
+            $hasAnyAccess = false;
+            $hasAnyAdd = false;
+            $hasAnyView = false;
+            $hasAnyEdit = false;
+
+            foreach ($categoryDocuments as $document) {
+                $privilege = $userPrivileges->get($document->id);
+                if ($privilege && $privilege->can_access) {
+                    $hasAnyAccess = true;
+                    if ($privilege->can_add) $hasAnyAdd = true;
+                    if ($privilege->can_view) $hasAnyView = true;
+                    if ($privilege->can_edit) $hasAnyEdit = true;
+                }
+            }
+
+            $foldersByCategory[] = [
+                'category' => $category,
+                'document_count' => $categoryDocuments->count(),
+                'documents' => $categoryDocuments,
+                'has_access' => $hasAnyAccess,
+                'can_add' => $hasAnyAdd,
+                'can_view' => $hasAnyView,
+                'can_edit' => $hasAnyEdit,
             ];
-        });
+        }
 
         $roles = [
             'City Legal Officer',
@@ -65,7 +78,7 @@ class RoleController extends Controller
             'Community Affairs Assistant II',
         ];
 
-        return view('admin.roles.edit', compact('user', 'foldersWithAccess', 'roles'));
+        return view('admin.roles.edit', compact('user', 'foldersByCategory', 'roles'));
     }
 
     /**
@@ -76,57 +89,56 @@ class RoleController extends Controller
         $request->validate([
             'role' => 'required|string',
             'folders' => 'nullable|array',
-            'folders.*' => 'string',
         ]);
 
         // Update role
         $user->role = $request->role;
         $user->save();
 
-        // Get all available folders
-        $allFolders = $this->driveService->listFolders();
+        // Get all available documents
+        $allDocuments = AdminDocument::all();
         $selectedFolders = $request->folders ?? [];
 
-        // Update folder privileges
-        foreach ($allFolders as $folder) {
-            $folderId = $folder['id'];
-            $hasAccess = in_array($folderId, $selectedFolders);
+        // Update document privileges based on folder selection
+        foreach ($allDocuments as $document) {
+            $documentId = $document->id;
+            $category = $document->category;
+            $categorySlug = \Str::slug($category);
+            
+            // Check if folder is selected
+            $hasAccess = in_array($category, $selectedFolders);
 
-            // Get CRUD permissions for this folder
-            $canAdd = $hasAccess && $request->has("add_{$folderId}");
-            $canEdit = $hasAccess && $request->has("edit_{$folderId}");
-            $canView = $hasAccess && $request->has("view_{$folderId}");
-            $canDelete = $hasAccess && $request->has("delete_{$folderId}");
+            // Get folder-level permissions using slugified field names
+            $canAdd = $hasAccess && $request->input("add_{$categorySlug}") !== null;
+            $canView = $hasAccess && $request->input("view_{$categorySlug}") !== null;
+            $canEdit = $hasAccess && $request->input("edit_{$categorySlug}") !== null;
 
             // Check if privilege exists
-            $privilege = UserFolderPrivilege::where('user_id', $user->id)
-                ->where('folder_id', $folderId)
+            $privilege = UserDocumentPrivilege::where('user_id', $user->id)
+                ->where('admin_document_id', $documentId)
                 ->first();
 
             if ($privilege) {
                 // Update existing privilege
                 $privilege->can_access = $hasAccess;
                 $privilege->can_add = $canAdd;
-                $privilege->can_edit = $canEdit;
                 $privilege->can_view = $canView;
-                $privilege->can_delete = $canDelete;
+                $privilege->can_edit = $canEdit;
                 $privilege->save();
             } else {
                 // Create new privilege
-                UserFolderPrivilege::create([
+                UserDocumentPrivilege::create([
                     'user_id' => $user->id,
-                    'folder_id' => $folderId,
-                    'folder_name' => $folder['name'],
+                    'admin_document_id' => $documentId,
                     'can_access' => $hasAccess,
                     'can_add' => $canAdd,
-                    'can_edit' => $canEdit,
                     'can_view' => $canView,
-                    'can_delete' => $canDelete,
+                    'can_edit' => $canEdit,
                 ]);
             }
         }
 
         return redirect()->route('admin.roles.index')
-            ->with('success', 'User role and privileges updated successfully!');
+            ->with('success', 'User role and folder privileges updated successfully!');
     }
 }

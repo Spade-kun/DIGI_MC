@@ -24,8 +24,26 @@ class AdminDocumentController extends Controller
      */
     public function index()
     {
-        $documents = AdminDocument::orderBy('created_at', 'desc')->get();
-        return view('admin.documents.index', compact('documents'));
+        // Get document counts by category
+        $categories = [
+            'Republic Act' => AdminDocument::where('category', 'Republic Act')->count(),
+            'Memorandum' => AdminDocument::where('category', 'Memorandum')->count(),
+            'Proclamations' => AdminDocument::where('category', 'Proclamations')->count(),
+        ];
+
+        return view('admin.documents.index', compact('categories'));
+    }
+
+    /**
+     * Show documents in a specific category folder
+     */
+    public function showCategory($category)
+    {
+        $documents = AdminDocument::where('category', $category)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.documents.category', compact('documents', 'category'));
     }
 
     /**
@@ -35,6 +53,7 @@ class AdminDocumentController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'category' => 'required|string|in:Republic Act,Memorandum,Proclamations',
             'case_no' => 'required|string|max:255',
             'date_issued' => 'required|date',
             'file' => 'required|file|mimes:pdf|max:10240', // 10MB max, PDF only
@@ -58,14 +77,16 @@ class AdminDocumentController extends Controller
 
                 AdminDocument::create([
                     'title' => $request->title,
+                    'category' => $request->category,
                     'case_no' => $request->case_no,
                     'date_issued' => $request->date_issued,
                     'file_path' => $filePath,
                     'file_name' => $fileName,
                     'google_drive_id' => $googleDriveId,
+                    'uploaded_by' => auth('admin')->user()->email,
                 ]);
 
-                return redirect()->route('admin.documents.index')
+                return redirect()->route('admin.documents.category', $request->category)
                     ->with('success', 'Document added successfully!');
             }
 
@@ -115,6 +136,27 @@ class AdminDocumentController extends Controller
         ]);
 
         return $uploadedFile->id;
+    }
+
+    /**
+     * Update the specified document
+     */
+    public function update(Request $request, AdminDocument $document)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'case_no' => 'required|string|max:255',
+            'date_issued' => 'required|date',
+        ]);
+
+        $document->update([
+            'title' => $request->title,
+            'case_no' => $request->case_no,
+            'date_issued' => $request->date_issued,
+        ]);
+
+        return redirect()->route('admin.documents.category', $document->category)
+            ->with('success', 'Document updated successfully!');
     }
 
     /**

@@ -16,8 +16,8 @@
 
         <div class="card">
             <div class="card-header pb-0">
-                <h6>Approved Users - Role & Folder Access</h6>
-                <p class="text-sm mb-0">Manage user roles and folder access permissions</p>
+                <h6>Approved Users - Role & Document Access</h6>
+                <p class="text-sm mb-0">Manage user roles and document access permissions</p>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
                 <div class="table-responsive p-0">
@@ -27,7 +27,7 @@
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Folder Access</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Document Access</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
                             </tr>
                         </thead>
@@ -58,11 +58,11 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         @php
-                                            $accessCount = $user->folderPrivileges()->where('can_access', true)->count();
-                                            $totalFolders = $user->folderPrivileges()->count();
+                                            $accessCount = $user->documentPrivileges()->where('can_access', true)->count();
+                                            $totalDocuments = \App\Models\AdminDocument::count();
                                         @endphp
                                         <span class="text-secondary text-xs font-weight-bold">
-                                            {{ $accessCount }} / {{ $totalFolders }} folders
+                                            {{ $accessCount }} / {{ $totalDocuments }} documents
                                         </span>
                                     </td>
                                     <td class="align-middle text-center">

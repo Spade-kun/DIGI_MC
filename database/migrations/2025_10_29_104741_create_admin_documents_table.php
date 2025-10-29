@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('file_name');
             $table->string('google_drive_id')->nullable();
+            $table->string('uploaded_by');
             $table->timestamps();
         });
     }
