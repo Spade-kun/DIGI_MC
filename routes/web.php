@@ -130,6 +130,14 @@ Route::prefix('admin')->group(function () {
             Route::get('/{document}/download', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'download'])->name('download');
             Route::delete('/{document}', [App\Http\Controllers\Admin\AdminUserDocumentController::class, 'destroy'])->name('destroy');
         });
+        
+        // Admin Documents Management Routes
+        Route::prefix('documents')->name('admin.documents.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\AdminDocumentController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\Admin\AdminDocumentController::class, 'store'])->name('store');
+            Route::delete('/{document}', [App\Http\Controllers\Admin\AdminDocumentController::class, 'destroy'])->name('destroy');
+            Route::get('/{document}/download', [App\Http\Controllers\Admin\AdminDocumentController::class, 'download'])->name('download');
+        });
     });
 });
 

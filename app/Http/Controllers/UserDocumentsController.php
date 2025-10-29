@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserDocument;
 use App\Services\GoogleDriveService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class UserDocumentsController extends Controller
 {
@@ -44,65 +42,7 @@ class UserDocumentsController extends Controller
             ];
         })->toArray();
 
-        // Get user's submitted documents
-        $pendingDocuments = $user->userDocuments()
-            ->where('status', 'pending')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $approvedDocuments = $user->userDocuments()
-            ->where('status', 'approved')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->groupBy('category');
-
-        $rejectedDocuments = $user->userDocuments()
-            ->where('status', 'rejected')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $categories = UserDocument::getCategories();
-
-        return view('user.documents.index', compact(
-            'folders',
-            'pendingDocuments',
-            'approvedDocuments',
-            'rejectedDocuments',
-            'categories'
-        ));
-    }
-
-    /**
-     * Store a newly submitted document
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string',
-            'file' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240', // 10MB max
-        ]);
-
-        // Handle file upload
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('user-documents', $fileName, 'public');
-
-            UserDocument::create([
-                'user_id' => Auth::id(),
-                'title' => $request->title,
-                'category' => $request->category,
-                'file_path' => $filePath,
-                'file_name' => $fileName,
-                'status' => 'pending',
-            ]);
-
-            return redirect()->route('user.documents.index')
-                ->with('success', 'Document submitted successfully! It is now pending for review.');
-        }
-
-        return back()->with('error', 'File upload failed.');
+        return view('user.documents.index', compact('folders'));
     }
 
     /**
@@ -120,23 +60,6 @@ class UserDocumentsController extends Controller
         // Redirect to Google Drive folder
         $driveLink = "https://drive.google.com/drive/folders/{$folderId}";
         return redirect()->away($driveLink);
-    }
-
-    /**
-     * Download user document
-     */
-    public function download(UserDocument $document)
-    {
-        // Check if the document belongs to the authenticated user
-        if ($document->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized access');
-        }
-
-        if (Storage::disk('public')->exists($document->file_path)) {
-            return Storage::disk('public')->download($document->file_path, $document->file_name);
-        }
-
-        return back()->with('error', 'File not found.');
     }
 
     /**

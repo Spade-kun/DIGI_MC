@@ -58,14 +58,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's submitted documents.
-     */
-    public function userDocuments(): HasMany
-    {
-        return $this->hasMany(UserDocument::class);
-    }
-
-    /**
      * Check if user has access to a specific folder.
      */
     public function hasAccessToFolder(string $folderId): bool

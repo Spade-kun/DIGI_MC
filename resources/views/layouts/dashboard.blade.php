@@ -120,6 +120,14 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.documents.*') ? 'active' : '' }}" href="{{ route('admin.documents.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-folder-17 text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Documents</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.user-documents.*') ? 'active' : '' }}" href="{{ route('admin.user-documents.index') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-single-copy-04 text-success text-sm opacity-10"></i>

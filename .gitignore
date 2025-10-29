@@ -19,6 +19,8 @@
 /storage/*.key
 /storage/pail
 /storage/app/google-drive-credentials.json
+/storage/app/google/credentials.json
+/storage/app/dialogflow/credentials.json
 /vendor
 Homestead.json
 Homestead.yaml
