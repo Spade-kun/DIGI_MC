@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers\Admin;
 
@@ -12,13 +12,13 @@ class AdminDocumentController extends Controller
 {
     public function index()
     {
-        $categories = ['Republic Act', 'Memorandum', 'Proclamations'];
-        $folders = [];
-        foreach ($categories as $category) {
+        $categoryNames = ['Republic Act', 'Memorandum', 'Proclamations'];
+        $categories = [];
+        foreach ($categoryNames as $category) {
             $count = AdminDocument::where('category', $category)->count();
-            $folders[] = ['category' => $category, 'count' => $count];
+            $categories[$category] = $count;
         }
-        return view('admin.documents.index', compact('folders'));
+        return view('admin.documents.index', compact('categories'));
     }
     
     public function showCategory($category)

@@ -9,168 +9,295 @@
   <title>User Login - {{ config('app.name', 'Laravel') }}</title>
   
   <!-- Fonts and icons -->
-  <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-  <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <!-- CSS Files -->
-  <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css') }}" rel="stylesheet" />
-</head>
-
-<body class="">
-  <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-          <div class="container-fluid pe-0">
-            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="{{ route('user.login') }}">
-             {{ config('app.name', 'Laravel') }} User
-            </a>
-          </div>
-        </nav>
-        <!-- End Navbar -->
-      </div>
-    </div>
-  </div>
-  <main class="main-content mt-0">
-    <section>
-      <div class="page-header min-vh-75">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-              <div class="card card-plain mt-8">
-                <div class="card-header pb-0 text-left bg-transparent">
-                  <h3 class="font-weight-bolder text-info text-gradient">User Login</h3>
-                  <p class="mb-0">Sign in with your Google account</p>
-                </div>
-                <div class="card-body">
-                  <!-- Success Alert -->
-                  @if(session('success'))
-                  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-                    <div class="d-flex align-items-center">
-                      <span class="alert-icon me-3"><i class="fas fa-check-circle fa-2x"></i></span>
-                      <div>
-                        <span class="alert-text d-block"><strong>Success!</strong></span>
-                        <span class="alert-text text-sm">{{ session('success') }}</span>
-                      </div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  @endif
-
-                  <!-- Error Alert -->
-                  @if(session('error'))
-                  <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
-                    <div class="d-flex align-items-center">
-                      <span class="alert-icon me-3"><i class="fas fa-exclamation-circle fa-2x"></i></span>
-                      <div>
-                        <span class="alert-text d-block"><strong>Error!</strong></span>
-                        <span class="alert-text text-sm">{{ session('error') }}</span>
-                      </div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  @endif
-
-                  <!-- Success Alert for Registration -->
-                  @if(session('status'))
-                  <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-                    <div class="d-flex align-items-center">
-                      <span class="alert-icon me-3"><i class="fas fa-check-circle fa-2x"></i></span>
-                      <div>
-                        <span class="alert-text d-block"><strong>Registration Successful!</strong></span>
-                        <span class="alert-text text-sm">{{ session('status') }}</span>
-                      </div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  @endif
-
-                  <!-- Google Login Button -->
-                  <div class="text-center my-4">
-                    <a href="{{ route('google.redirect') }}" class="btn btn-lg bg-gradient-info w-100 mb-0 google-btn">
-                      <i class="fab fa-google me-2"></i>
-                      Sign in with Google
-                    </a>
-                  </div>
-
-                  <div class="text-center my-3">
-                    <div class="d-flex align-items-center justify-content-center">
-                      <div class="border-top flex-grow-1"></div>
-                      <span class="px-3 text-sm text-muted">Secure Login</span>
-                      <div class="border-top flex-grow-1"></div>
-                    </div>
-                  </div>
-
-                  <div class="text-center">
-                    <div class="alert alert-light mb-0" role="alert">
-                      <i class="fas fa-shield-alt text-info me-1"></i>
-                      <span class="text-sm">Only approved users can sign in</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                  <p class="mb-4 text-sm mx-auto">
-                    Don't have an account?
-                    <a href="{{ route('user.register') }}" class="text-info text-gradient font-weight-bold">Sign up</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" 
-                  style="background-image:url('{{ asset('assets/img/curved-images/curved6.jpg') }}')"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <!-- Footer -->
-  <footer class="footer py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-8 mx-auto text-center mt-1">
-          <p class="mb-0 text-secondary">
-            Copyright © <script>document.write(new Date().getFullYear())</script> {{ config('app.name', 'Laravel') }}
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Core JS Files -->
-  <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-  <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-  <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-  </script>
-  <script src="{{ asset('assets/js/soft-ui-dashboard.min.js') }}"></script>
   
   <style>
-    .alert {
-      border-radius: 0.75rem;
-      animation: slideInDown 0.5s ease-out;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    .login-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      background: #e8e8e8;
+    }
+
+    /* Purple Wave Decorations */
+    .wave-decoration {
+      position: absolute;
+      z-index: 1;
+    }
+
+    .wave-top-left {
+      top: 0;
+      left: 0;
+      width: 470px;
+      height: 395px;
+      background-image: url("{{ asset('Top-left.svg') }}");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top left;
+    }
+
+    .wave-bottom-right {
+      bottom: 0;
+      right: 0;
+      width: 470px;
+      height: 395px;
+      background-image: url("{{ asset('Bottom-Right.svg') }}");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: bottom right;
+    }
+
+    /* Centered Login Card */
+    .login-card {
+      background: white;
+      border-radius: 25px;
+      padding: 2.5rem 3rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    /* Logo */
+    .logo-container {
+      margin-bottom: 1rem;
+    }
+
+    .logo-container img {
+      width: 140px;
+      height: auto;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Logo Text */
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .logo-text .legal {
+      color: #6b21a8;
+    }
+
+    .logo-text .it {
+      color: #f59e0b;
+    }
+
+    .logo-text .ease {
+      color: #6b21a8;
+    }
+
+    /* Input Fields */
+    .input-group {
+      margin-bottom: 0.85rem;
+      text-align: left;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      background: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #6b21a8;
+      box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+    }
+
+    .input-field::placeholder {
+      color: #9ca3af;
+    }
+
+    /* Login Button */
+    .login-btn {
+      width: 100%;
+      padding: 0.75rem 2rem;
+      background: #6b21a8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(107, 33, 168, 0.3);
+      margin-top: 0.3rem;
+    }
+
+    .login-btn:hover {
+      background: #7c3aed;
+      box-shadow: 0 6px 16px rgba(107, 33, 168, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .login-btn i {
+      font-size: 1rem;
+    }
+
+    /* Or Divider */
+    .divider {
+      text-align: center;
+      margin: 1.2rem 0;
+      color: #9ca3af;
+      font-size: 0.8rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    /* Google Button */
+    .google-btn {
+      width: 100%;
+      padding: 0.75rem 2rem;
+      background: white;
+      color: #7c3aed;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .google-btn:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .google-btn i {
+      font-size: 1rem;
+      color: #4285f4;
+    }
+
+    /* Sign Up Link */
+    .signup-text {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .signup-text a {
+      color: #6b21a8;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .signup-text a:hover {
+      color: #7c3aed;
+      text-decoration: underline;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slideInDown 0.5s ease-out;
+      border: none;
+      font-size: 0.85rem;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .alert-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .alert i {
+      font-size: 1.2rem;
+    }
+
+    .alert-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+
+    .alert-close:hover {
+      opacity: 1;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
     @keyframes slideInDown {
       from {
         transform: translateY(-20px);
@@ -181,52 +308,158 @@
         opacity: 1;
       }
     }
-    .alert-icon i {
-      color: #82d616;
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
     }
-    .alert-danger .alert-icon i {
-      color: #ea0606;
+
+    /* Responsive Design */
+    @media (max-width: 968px) {
+      .wave-top-left {
+        width: 250px;
+        height: 210px;
+      }
+
+      .wave-bottom-right {
+        width: 300px;
+        height: 250px;
+      }
+
+      .login-card {
+        padding: 2.5rem 2rem;
+        max-width: 380px;
+      }
+
+      .logo-container img {
+        width: 150px;
+      }
+
+      .logo-text {
+        font-size: 1.75rem;
+      }
     }
-    .btn-lg {
-      padding: 15px 30px;
-      font-size: 1rem;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    }
-    .google-btn {
-      position: relative;
-      overflow: hidden;
-    }
-    .google-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    .google-btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-    .google-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    }
-    .btn-lg i {
-      font-size: 1.2rem;
-      position: relative;
-      z-index: 1;
-    }
-    .alert-light {
-      background-color: #f8f9fa;
-      border: 1px solid #e9ecef;
+
+    @media (max-width: 576px) {
+      .login-card {
+        padding: 2rem 1.5rem;
+        max-width: 340px;
+        margin: 1rem;
+      }
+
+      .logo-container img {
+        width: 130px;
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+      }
+
+      .wave-top-left {
+        width: 180px;
+        height: 150px;
+      }
+
+      .wave-bottom-right {
+        width: 220px;
+        height: 180px;
+      }
     }
   </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <!-- Purple Wave Decorations -->
+    <div class="wave-decoration wave-top-left"></div>
+    <div class="wave-decoration wave-bottom-right"></div>
+
+    <!-- Centered Login Card -->
+    <div class="login-card">
+      <!-- Success Alert -->
+      @if(session('success'))
+      <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <div>
+          <strong>Success!</strong><br>
+          <span style="font-size: 0.9rem;">{{ session('success') }}</span>
+        </div>
+        <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">&times;</button>
+      </div>
+      @endif
+
+      <!-- Error Alert -->
+      @if(session('error'))
+      <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+          <strong>Error!</strong><br>
+          <span style="font-size: 0.9rem;">{{ session('error') }}</span>
+        </div>
+        <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">&times;</button>
+      </div>
+      @endif
+
+      <!-- Success Alert for Registration -->
+      @if(session('status'))
+      <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <div>
+          <strong>Registration Successful!</strong><br>
+          <span style="font-size: 0.9rem;">{{ session('status') }}</span>
+        </div>
+        <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">&times;</button>
+      </div>
+      @endif
+
+      <!-- Logo -->
+      <div class="logo-container">
+        <img src="{{ asset('City-Legal-Office-1024x1024-1.png') }}" alt="City Legal Office Malaybalay Logo">
+      </div>
+
+      <!-- Logo Text -->
+      <div class="logo-text">
+        <span class="legal">LEGAL</span><span class="it">IT</span><span class="ease">EASE</span>
+      </div>
+
+      <!-- Email Input -->
+      <div class="input-group">
+        <input type="email" class="input-field" placeholder="Email" readonly>
+      </div>
+
+      <!-- Password Input -->
+      <div class="input-group">
+        <input type="password" class="input-field" placeholder="Password" readonly>
+      </div>
+
+      <!-- Login Button -->
+      <button class="login-btn" disabled>
+        Login
+      </button>
+
+      <!-- Or Divider -->
+      <div class="divider">Or</div>
+
+      <!-- Google Login Button -->
+      <a href="{{ route('google.redirect') }}" class="google-btn">
+        <i class="fab fa-google"></i>
+        Login with Google
+      </a>
+
+      <!-- Sign Up Link -->
+      <div class="signup-text">
+        Don't have an account? <a href="{{ route('user.register') }}">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core JS Files -->
+  <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('assets/js/soft-ui-dashboard.min.js') }}"></script>
 </body>
 </html>

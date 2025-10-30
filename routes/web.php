@@ -6,8 +6,17 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\User\UserRegisterController;
+use App\Http\Controllers\LegalPublicController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
+// Public Legal Routes
+Route::prefix('legal')->group(function () {
+    Route::get('/public', [LegalPublicController::class, 'index'])->name('legal.public.index');
+    
+    // Public Dialogflow Chatbot API
+    Route::post('/api/dialogflow', [App\Http\Controllers\Api\DialogflowController::class, 'handleMessage'])->name('legal.api.dialogflow');
+});
 
 Route::get('/', function () {
     // If user is already authenticated, redirect to their dashboard
@@ -149,6 +158,7 @@ Route::prefix('admin')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

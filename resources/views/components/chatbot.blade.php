@@ -543,10 +543,12 @@ function removeTypingIndicator() {
 // Send message to Dialogflow
 async function sendToDialogflow(message) {
     try {
-        // This is a placeholder - you'll need to implement the actual Dialogflow API call
-        // You can either use Dialogflow REST API or Dialogflow Messenger integration
+        // Determine which API endpoint to use based on the current route
+        const apiUrl = window.location.pathname.includes('/legal/public') 
+            ? '/legal/api/dialogflow' 
+            : '/api/dialogflow';
         
-        const response = await fetch('/api/dialogflow', {
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
