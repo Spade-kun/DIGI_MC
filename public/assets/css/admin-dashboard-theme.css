@@ -1,0 +1,90 @@
+/* Admin Dashboard visual theme overrides matching provided mockup */
+:root{
+  --brand: #56158B;
+  --bg-page: #f3f3f3;
+  --panel-bg: #ffffff;
+  --muted: #9aa0a6;
+}
+
+/* Page background */
+body {
+  background: var(--bg-page) !important;
+}
+
+/* Sidebar tweaks */
+.sidenav {
+  background: transparent !important;
+  padding-top: 2.25rem;
+}
+.sidenav .navbar-brand-img{
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50%;
+}
+.sidenav .navbar-nav .nav-item .nav-link{
+  display:flex; align-items:center; gap:1rem; padding:0.75rem 1rem; border-radius:12px; margin:0.75rem 0; background:#fff; box-shadow:0 6px 14px rgba(0,0,0,0.04); color:#333; border: none;
+}
+
+/* Active nav item - purple square */
+.sidenav .navbar-nav .nav-item .nav-link.active{
+  background: var(--bg-page) !important;
+  box-shadow: none;
+}
+.sidenav .navbar-nav .nav-item .nav-link .icon{
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#fff; box-shadow:0 6px 14px rgba(0,0,0,0.06);
+}
+.sidenav .navbar-nav .nav-item .nav-link.active .icon{
+  background: var(--brand); color: #fff !important; box-shadow: none;
+}
+
+/* Left logo area spacing */
+.sidenav-header{ padding-left:1rem; padding-right:1rem; }
+
+/* Dashboard cards */
+.card {
+  border-radius: 12px !important;
+  background: var(--panel-bg) !important;
+  box-shadow: 0 6px 18px rgba(54,63,80,0.04) !important;
+}
+.card .card-body{ padding:1.25rem; }
+
+/* Big stat numbers */
+.numbers h5{ font-size:2rem; font-weight:700; margin:0; }
+.numbers p{ color:var(--muted); margin-bottom:0.5rem; }
+
+/* Search box */
+.search-box{ background:#fff; border-radius:12px; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.75rem; box-shadow:0 6px 14px rgba(0,0,0,0.03); }
+.search-box input{ border:0; outline:none; width:100%; }
+
+/* No records area */
+.no-records-panel{ background:#fff; border-radius:12px; padding:2.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#9aa0a6; box-shadow:0 6px 18px rgba(54,63,80,0.04); }
+.no-records-panel h5{ color:#6b6b6b; margin-top:0.5rem; margin-bottom:0.5rem; }
+
+/* Make cards in top row same height */
+.row .card{ min-height:120px; }
+
+/* Adjust footer and header text color */
+.navbar-main .font-weight-bolder{ color:var(--brand); }
+
+/* Ensure rounded search & content container */
+.container-fluid .card{ border-radius:12px; }
+
+/* Override primary gradient/icon colors to use brand */
+.bg-gradient-primary,
+.icon.icon-shape.bg-gradient-primary,
+.bg-gradient-primary.shadow-primary {
+  background: linear-gradient(195deg, rgba(86,21,139,0.95), rgba(86,21,139,0.8)) !important;
+  color: #fff !important;
+}
+
+/* Make small circular icons match design */
+.icon.icon-shape .ni { opacity: 1 !important; }
+
+/* Search input inside dashboard header */
+.navbar .search-box { width: 100%; }
+
+
+/* Responsive: reduce sidebar width on small screens */
+@media(max-width: 991px){
+  .sidenav{ display:none !important; }
+}

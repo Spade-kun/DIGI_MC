@@ -1,0 +1,37 @@
+/* Admin auth overrides to match welcome design */
+:root{
+  --brand: #56158B;
+  --brand-dark: #3e0f63;
+  --bg: #f7f7f8;
+}
+
+.admin-auth-hero{ background: var(--bg); min-height:100vh; display:flex; align-items:center; }
+
+.admin-left{
+  position:relative; padding:4rem 2rem;
+}
+.admin-left::before{
+  content:''; position:absolute; top:-40px; left:-40px; width:260px; height:220px; background:var(--brand); border-bottom-right-radius:160px; transform:rotate(-10deg);
+}
+.admin-left::after{
+  content:''; position:absolute; bottom:-40px; right:-40px; width:260px; height:220px; background:var(--brand); border-top-left-radius:160px; transform:rotate(10deg);
+}
+
+.brand-logo-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; z-index:2; }
+.brand-logo{ width:300px; height:300px; object-fit:contain; }
+.brand-title{ margin-top:1rem; color:var(--brand); font-weight:700; font-size:1.5rem; }
+
+.admin-right{ display:flex; align-items:center; justify-content:center; padding:3rem; }
+.auth-card{ background:#fff; border-radius:18px; padding:2.25rem; box-shadow:0 8px 30px rgba(54,63,80,0.08); width:100%; max-width:520px; }
+.auth-card h3{ color:var(--brand); margin-bottom:0.75rem; }
+.auth-card .form-control{ border-radius:10px; padding:0.9rem 1rem; border:1px solid #e6e6e9; }
+.auth-card .underline-or{ display:flex; align-items:center; gap:1rem; color:#9aa0a6; margin:1rem 0; font-size:0.9rem; }
+.auth-card .underline-or::before, .auth-card .underline-or::after{ content:''; flex:1; height:1px; background:#e6e6e9 }
+.btn-brand{ background:var(--brand); color:#fff; border-radius:10px; padding:0.6rem 1.4rem; box-shadow:0 6px 18px rgba(86,21,139,0.18); }
+
+@media (max-width: 991px){
+  .admin-left::before, .admin-left::after{ display:none; }
+  .brand-logo{ width:180px; height:180px }
+  .admin-auth-hero{ padding:2rem 0 }
+  .admin-left, .admin-right{ padding:1rem }
+}

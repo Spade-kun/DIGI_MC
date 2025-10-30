@@ -1,0 +1,93 @@
+:root{
+  --brand: #56158B;
+  --brand-dark: #3e0f63;
+  --bg: #f7f7f8;
+}
+
+/* Auth hero two-column layout */
+.auth-hero{
+  background-color: var(--bg);
+}
+
+.auth-hero .logo-column{
+  position: relative;
+  min-height: 420px;
+}
+
+/* Decorative curved corners */
+.auth-hero .logo-column::before{
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 220px;
+  height: 220px;
+  background: var(--brand);
+  border-bottom-right-radius: 120px;
+  transform: rotate(-10deg);
+}
+
+.auth-hero .logo-column::after{
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 220px;
+  height: 220px;
+  background: var(--brand);
+  border-top-left-radius: 120px;
+  transform: rotate(10deg);
+}
+
+.logo-wrap{
+  z-index: 10;
+}
+
+.logo-wrap .application-logo{
+  width: 280px;
+  height: 280px;
+  color: var(--brand);
+}
+
+.auth-card{
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.25rem;
+  box-shadow: 0 8px 30px rgba(54,63,80,0.08);
+}
+
+.auth-card h2{
+  color: var(--brand);
+}
+
+.auth-card input[type="email"],
+.auth-card input[type="password"],
+.auth-card input[type="text"]{
+  border: 1px solid #e6e6e9;
+  background: #fff;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.02);
+}
+
+.auth-card .underline-or{
+  display:flex; align-items:center; gap:1rem; color:#9aa0a6; margin:1rem 0; font-size:0.9rem;
+}
+.auth-card .underline-or::before, .auth-card .underline-or::after{ content: ''; flex:1; height:1px; background:#e6e6e9 }
+
+.auth-card button[type="submit"], .auth-card .btn-primary{
+  background: var(--brand) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 0.6rem 1.6rem !important;
+  box-shadow: 0 6px 18px rgba(86,21,139,0.18);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px){
+  .auth-hero .logo-column::before, .auth-hero .logo-column::after{
+    display:none;
+  }
+  .logo-wrap .application-logo{ width:180px; height:180px }
+  .auth-card{ padding:1.5rem }
+}

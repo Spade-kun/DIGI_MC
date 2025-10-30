@@ -1,0 +1,167 @@
+=============================================================
+DIGI_MC - Digital Document Management System Documentation
+=============================================================
+Last Updated: October 29, 2025
+Version: 1.0
+=============================================================
+
+1. SYSTEM OVERVIEW
+-----------------
+The DIGI_MC system is a comprehensive digital document management solution
+that provides secure storage, retrieval, and management of official documents
+with both local and cloud-based storage capabilities.
+
+2. CORE FUNCTIONALITIES
+----------------------
+2.1 Document Management
+    ✓ PDF document upload and storage
+    ✓ Automatic Google Drive backup
+    ✓ Document categorization
+    ✓ Version control
+    ✓ Audit trail tracking
+    ✓ Local and cloud synchronization
+
+2.2 User Management
+    ✓ Role-based access (Admin/User)
+    ✓ User registration workflow
+    ✓ Privilege management
+    ✓ Profile administration
+
+2.3 Search System
+    ✓ Advanced document search
+    ✓ Category/folder filtering
+    ✓ Full-text search
+    ✓ Date/title/case number filters
+
+2.4 Dashboard Features
+    ✓ Personalized user dashboards
+    ✓ Document preview
+    ✓ Download functionality
+    ✓ Real-time notifications
+
+3. SECURITY IMPLEMENTATION
+-------------------------
+3.1 Authentication
+    - Secure login system
+    - Role-based authorization
+    - Session management
+    - Access control middleware
+
+3.2 Document Security
+    - Folder-level permissions
+    - Document-specific access rights
+    - Encrypted storage
+    - Access logging
+
+3.3 Data Protection
+    - Input validation
+    - SQL injection prevention
+    - XSS protection
+    - CSRF security
+
+3.4 File System
+    - Secure storage paths
+    - API security
+    - Credential protection
+    - Access restrictions
+
+4. ACCESSIBILITY FEATURES
+------------------------
+4.1 Interface Design
+    - Responsive layout
+    - Clear navigation
+    - Consistent design
+    - Intuitive controls
+
+4.2 Document Access
+    - PDF viewer integration
+    - Direct downloads
+    - Multiple access methods
+    - Quick view options
+
+4.3 Search Options
+    - Advanced filters
+    - Category search
+    - Date filtering
+    - Recent documents
+
+5. USER EXPERIENCE
+-----------------
+5.1 Interface
+    - Clean dashboard design
+    - Consistent navigation
+    - Clear error messages
+    - Auto-dismissing alerts
+
+5.2 Document Operations
+    - Simplified upload process
+    - Quick document preview
+    - Easy download options
+    - Organized folders
+
+5.3 Admin Features
+    - Centralized dashboard
+    - User management
+    - Document organization
+    - Bulk operations
+
+6. TECHNICAL SPECIFICATIONS
+--------------------------
+6.1 File Requirements
+    - Format: PDF only
+    - Size limit: 10MB
+    - Validation: Automatic
+    - Storage: Local + Cloud
+
+6.2 Database Structure
+    - Normalized schema
+    - Relationship mapping
+    - Data integrity
+    - Indexed searches
+
+6.3 API Integration
+    - Google Drive API
+    - RESTful endpoints
+    - Secure communication
+    - Error handling
+
+7. SYSTEM REQUIREMENTS
+---------------------
+7.1 Server Requirements
+    - PHP 8.0+
+    - Laravel Framework
+    - MySQL/MariaDB
+    - Composer
+
+7.2 Client Requirements
+    - Modern web browser
+    - JavaScript enabled
+    - PDF viewer
+    - Internet connection
+
+8. MAINTENANCE
+-------------
+8.1 Regular Tasks
+    - Database backup
+    - Log monitoring
+    - Storage cleanup
+    - Permission audits
+
+8.2 Security Updates
+    - Package updates
+    - Security patches
+    - Access review
+    - Credential rotation
+
+9. SUPPORT RESOURCES
+-------------------
+- Documentation: /docs
+- Error logs: /storage/logs
+- Setup guide: SETUP.md
+- User guide: USER_GUIDE.md
+
+=============================================================
+For technical support contact:
+System Administrator
+Email: admin@digi-mc.com
+=============================================================

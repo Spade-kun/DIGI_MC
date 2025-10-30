@@ -11,19 +11,29 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Scripts & Auth styles -->
+    @vite(['resources/css/app.css', 'resources/css/auth-theme.css', 'resources/js/app.js'])
+    <!-- Fallback static auth stylesheet so design shows even if Vite/dev-server isn't running -->
+    <link href="{{ asset('assets/css/auth-theme.css') }}" rel="stylesheet" />
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+        <div class="min-h-screen auth-hero flex items-center">
+            <div class="container mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="logo-column flex items-center justify-center">
+                        <div class="logo-wrap">
+                            {{-- Use brand logo image; place your SVG/PNG at public/assets/img/brand-logo.svg or .png --}}
+                            <img src="{{ asset('assets/img/brand-logo.svg') }}" alt="brand logo" class="application-logo" />
+                        </div>
+                    </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+                    <div class="form-column flex items-center justify-center">
+                        <div class="auth-card w-full max-w-md">
+                            <h2 class="text-2xl font-bold text-center mb-6">Welcome</h2>
+                            {{ $slot }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
