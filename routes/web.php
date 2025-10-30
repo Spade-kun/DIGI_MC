@@ -52,6 +52,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/user/logout', [UserAuthController::class, 'logout'])->name('user.logout');
     Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/user/dashboard/search', [DashboardController::class, 'search'])->name('user.dashboard.search');
     
     // User Documents Routes (Admin Documents Access)
     Route::prefix('user/documents')->name('user.documents.')->group(function () {

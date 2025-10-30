@@ -1,97 +1,222 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminDocument;
+use App\Services\GoogleDriveService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
+use Google\Client;
+use Google\Service\Drive;
 
 class AdminDocumentController extends Controller
 {
+    protected $googleDriveService;
+    
+    public function __construct(GoogleDriveService $googleDriveService)
+    {
+        $this->googleDriveService = $googleDriveService;
+    }
+
+    /**
+     * Display a listing of documents
+     */
     public function index()
     {
-        $categories = ['Republic Act', 'Memorandum', 'Proclamations'];
-        $folders = [];
-        foreach ($categories as $category) {
-            $count = AdminDocument::where('category', $category)->count();
-            $folders[] = ['category' => $category, 'count' => $count];
-        }
-        return view('admin.documents.index', compact('folders'));
+        // Get document counts by category
+        $categories = [
+            'Republic Act' => AdminDocument::where('category', 'Republic Act')->count(),
+            'Memorandum' => AdminDocument::where('category', 'Memorandum')->count(),
+            'Proclamations' => AdminDocument::where('category', 'Proclamations')->count(),
+        ];
+
+        return view('admin.documents.index', compact('categories'));
     }
-    
+
+    /**
+     * Show documents in a specific category folder
+     */
     public function showCategory($category)
     {
-        $categories = ['Republic Act', 'Memorandum', 'Proclamations'];
-        if (!in_array($category, $categories)) { abort(404); }
-        $documents = AdminDocument::where('category', $category)->orderBy('created_at', 'desc')->get();
-        return view('admin.documents.category', compact('category', 'documents'));
+        $documents = AdminDocument::where('category', $category)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.documents.category', compact('documents', 'category'));
     }
-    
+
+    /**
+     * Store a newly created document
+     */
     public function store(Request $request)
     {
-        $request->validate(['title' => 'required|string|max:255', 'case_no' => 'required|string|max:255', 'date_issued' => 'required|date', 'category' => 'required|string|in:Republic Act,Memorandum,Proclamations', 'file' => 'required|file|mimes:pdf|max:10240']);
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('admin_documents', $fileName, 'public');
-            $document = AdminDocument::create(['title' => $request->title, 'case_no' => $request->case_no, 'date_issued' => $request->date_issued, 'category' => $request->category, 'file_path' => $filePath, 'file_name' => $fileName, 'uploaded_by' => Auth::guard('admin')->user()->email]);
-            try {
-                $googleDriveId = $this->uploadToGoogleDrive($document);
-                if ($googleDriveId) { $document->google_drive_id = $googleDriveId; $document->save(); }
-            } catch (\Exception $e) { \Log::error('Google Drive upload failed: ' . $e->getMessage()); }
-            return redirect()->route('admin.documents.category', $request->category)->with('success', 'Document uploaded successfully!');
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|in:Republic Act,Memorandum,Proclamations',
+            'case_no' => 'required|string|max:255',
+            'date_issued' => 'required|date',
+            'file' => 'required|file|mimes:pdf|max:10240', // 10MB max, PDF only
+        ]);
+
+        try {
+            // Handle file upload to local storage
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('admin_documents', $fileName, 'public');
+
+                // Upload to Google Drive
+                $googleDriveId = null;
+                try {
+                    $googleDriveId = $this->uploadToGoogleDrive($file, $fileName);
+                } catch (\Exception $e) {
+                    // Log the error but continue - file is saved locally
+                    \Log::warning('Google Drive upload failed: ' . $e->getMessage());
+                }
+
+                AdminDocument::create([
+                    'title' => $request->title,
+                    'category' => $request->category,
+                    'case_no' => $request->case_no,
+                    'date_issued' => $request->date_issued,
+                    'file_path' => $filePath,
+                    'file_name' => $fileName,
+                    'google_drive_id' => $googleDriveId,
+                    'uploaded_by' => auth('admin')->user()->email,
+                ]);
+
+                return redirect()->route('admin.documents.category', $request->category)
+                    ->with('success', 'Document added successfully!');
+            }
+
+            return back()->with('error', 'File upload failed.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: ' . $e->getMessage());
         }
-        return back()->with('error', 'File upload failed.');
     }
-    
+
+    /**
+     * Upload file to Google Drive
+     */
+    private function uploadToGoogleDrive($file, $fileName)
+    {
+        // Get Google credentials from config
+        $credentialsPath = config('services.google.credentials_path');
+        
+        if (!$credentialsPath || !file_exists($credentialsPath)) {
+            throw new \Exception('Google credentials not found');
+        }
+
+        // Initialize Google Client
+        $client = new Client();
+        $client->setAuthConfig($credentialsPath);
+        $client->addScope(Drive::DRIVE_FILE);
+        $client->setAccessType('offline');
+
+        // Create Drive service
+        $driveService = new Drive($client);
+
+        // The target folder ID from the request
+        $folderId = '1vLh0c7yQ4dF7jeXOFPWfshCPoH_NsyAH';
+
+        // Create file metadata
+        $fileMetadata = new Drive\DriveFile([
+            'name' => $fileName,
+            'parents' => [$folderId]
+        ]);
+
+        // Upload file
+        $content = file_get_contents($file->getRealPath());
+        $uploadedFile = $driveService->files->create($fileMetadata, [
+            'data' => $content,
+            'mimeType' => $file->getMimeType(),
+            'uploadType' => 'multipart',
+            'fields' => 'id'
+        ]);
+
+        return $uploadedFile->id;
+    }
+
+    /**
+     * Update the specified document
+     */
     public function update(Request $request, AdminDocument $document)
     {
-        $request->validate(['title' => 'required|string|max:255', 'case_no' => 'required|string|max:255', 'date_issued' => 'required|date']);
-        $document->update(['title' => $request->title, 'case_no' => $request->case_no, 'date_issued' => $request->date_issued]);
-        return redirect()->route('admin.documents.category', $document->category)->with('success', 'Document updated successfully!');
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'case_no' => 'required|string|max:255',
+            'date_issued' => 'required|date',
+        ]);
+
+        $document->update([
+            'title' => $request->title,
+            'case_no' => $request->case_no,
+            'date_issued' => $request->date_issued,
+        ]);
+
+        return redirect()->route('admin.documents.category', $document->category)
+            ->with('success', 'Document updated successfully!');
     }
-    
+
+    /**
+     * Remove the specified document
+     */
     public function destroy(AdminDocument $document)
     {
-        if (Storage::disk('public')->exists($document->file_path)) { Storage::disk('public')->delete($document->file_path); }
-        if ($document->google_drive_id) { try { $this->deleteFromGoogleDrive($document->google_drive_id); } catch (\Exception $e) { \Log::error('Google Drive deletion failed: ' . $e->getMessage()); } }
-        $category = $document->category;
-        $document->delete();
-        return redirect()->route('admin.documents.category', $category)->with('success', 'Document deleted successfully!');
-    }
-    
-    public function download(AdminDocument $document)
-    {
-        if (Storage::disk('public')->exists($document->file_path)) { return Storage::disk('public')->download($document->file_path, $document->file_name); }
-        return back()->with('error', 'File not found.');
-    }
-    
-    private function uploadToGoogleDrive($document)
-    {
         try {
-            $client = new \Google_Client();
-            $client->setAuthConfig(storage_path('app/google-drive-credentials.json'));
-            $client->addScope(\Google_Service_Drive::DRIVE_FILE);
-            $service = new \Google_Service_Drive($client);
-            $fileMetadata = new \Google_Service_Drive_DriveFile(['name' => $document->file_name, 'parents' => ['1vLh0c7yQ4dF7jeXOFPWfshCPoH_NsyAH']]);
-            $filePath = storage_path('app/public/' . $document->file_path);
-            $content = file_get_contents($filePath);
-            $file = $service->files->create($fileMetadata, ['data' => $content, 'mimeType' => 'application/pdf', 'uploadType' => 'multipart', 'fields' => 'id']);
-            return $file->id;
-        } catch (\Exception $e) { \Log::error('Google Drive upload error: ' . $e->getMessage()); return null; }
+            // Delete file from storage
+            if (Storage::disk('public')->exists($document->file_path)) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+
+            // Optionally delete from Google Drive
+            if ($document->google_drive_id) {
+                try {
+                    $this->deleteFromGoogleDrive($document->google_drive_id);
+                } catch (\Exception $e) {
+                    \Log::warning('Google Drive deletion failed: ' . $e->getMessage());
+                }
+            }
+
+            $document->delete();
+
+            return redirect()->route('admin.documents.index')
+                ->with('success', 'Document deleted successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error deleting document: ' . $e->getMessage());
+        }
     }
-    
+
+    /**
+     * Delete file from Google Drive
+     */
     private function deleteFromGoogleDrive($fileId)
     {
-        try {
-            $client = new \Google_Client();
-            $client->setAuthConfig(storage_path('app/google-drive-credentials.json'));
-            $client->addScope(\Google_Service_Drive::DRIVE_FILE);
-            $service = new \Google_Service_Drive($client);
-            $service->files->delete($fileId);
-            return true;
-        } catch (\Exception $e) { \Log::error('Google Drive deletion error: ' . $e->getMessage()); return false; }
+        $credentialsPath = config('services.google.credentials_path');
+        
+        if (!$credentialsPath || !file_exists($credentialsPath)) {
+            return;
+        }
+
+        $client = new Client();
+        $client->setAuthConfig($credentialsPath);
+        $client->addScope(Drive::DRIVE_FILE);
+        $client->setAccessType('offline');
+
+        $driveService = new Drive($client);
+        $driveService->files->delete($fileId);
+    }
+
+    /**
+     * Download the document file
+     */
+    public function download(AdminDocument $document)
+    {
+        if (Storage::disk('public')->exists($document->file_path)) {
+            return Storage::disk('public')->download($document->file_path, $document->file_name);
+        }
+
+        return back()->with('error', 'File not found.');
     }
 }

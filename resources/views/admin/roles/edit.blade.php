@@ -83,7 +83,7 @@
                                                      id="permissions_{{ Str::slug($folder['category']) }}">
                                                     <div class="row">
                                                         <div class="col-md-4 col-12">
-                                                            <div class="form-check">
+                                                            <!-- <div class="form-check">
                                                                 <input class="form-check-input permission-checkbox" 
                                                                        type="checkbox" 
                                                                        name="add_{{ Str::slug($folder['category']) }}"
@@ -94,7 +94,7 @@
                                                                 <label class="form-check-label text-sm" for="add_{{ Str::slug($folder['category']) }}">
                                                                     <i class="fa fa-plus-circle text-success"></i> Add
                                                                 </label>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         <div class="col-md-4 col-12">
                                                             <div class="form-check">

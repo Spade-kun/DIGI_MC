@@ -148,16 +148,14 @@ class DocumentController extends Controller
         $user = Auth::user();
         $document = AdminDocument::findOrFail($id);
         
-        // Check if user has ANY view permission for documents in this category
-        $hasViewPermission = UserDocumentPrivilege::whereHas('adminDocument', function($query) use ($document) {
-            $query->where('category', $document->category);
-        })
-        ->where('user_id', $user->id)
-        ->where('can_access', true)
-        ->where('can_view', true)
-        ->exists();
+        // Check if user has view permission for this specific document
+        $documentPrivilege = UserDocumentPrivilege::where('user_id', $user->id)
+            ->where('admin_document_id', $document->id)
+            ->where('can_access', 1)
+            ->where('can_view', 1)
+            ->first();
         
-        if (!$hasViewPermission) {
+        if (!$documentPrivilege) {
             abort(403, 'You do not have permission to view this document.');
         }
         
@@ -179,16 +177,14 @@ class DocumentController extends Controller
         $user = Auth::user();
         $document = AdminDocument::findOrFail($id);
         
-        // Check if user has ANY view permission for documents in this category
-        $hasViewPermission = UserDocumentPrivilege::whereHas('adminDocument', function($query) use ($document) {
-            $query->where('category', $document->category);
-        })
-        ->where('user_id', $user->id)
-        ->where('can_access', true)
-        ->where('can_view', true)
-        ->exists();
+        // Check if user has view permission for this specific document
+        $documentPrivilege = UserDocumentPrivilege::where('user_id', $user->id)
+            ->where('admin_document_id', $document->id)
+            ->where('can_access', 1)
+            ->where('can_view', 1)
+            ->first();
         
-        if (!$hasViewPermission) {
+        if (!$documentPrivilege) {
             abort(403, 'You do not have permission to download this document.');
         }
         
@@ -301,37 +297,20 @@ class DocumentController extends Controller
     }
     
     /**
-     * Upload file to Google Drive with category-specific folder
+     * Upload file to Google Drive
      */
     private function uploadToGoogleDrive($document)
     {
         try {
             $client = new \Google_Client();
-            
-            // Use the same credentials path as admin
-            $credentialsPath = config('services.google.credentials_path');
-            
-            // If path is relative, make it absolute
-            if (!file_exists($credentialsPath)) {
-                $credentialsPath = storage_path('app/google/credentials.json');
-            }
-            
-            if (!file_exists($credentialsPath)) {
-                throw new \Exception('Google credentials not found at: ' . $credentialsPath);
-            }
-            
-            $client->setAuthConfig($credentialsPath);
+            $client->setAuthConfig(storage_path('app/google-drive-credentials.json'));
             $client->addScope(\Google_Service_Drive::DRIVE_FILE);
             
             $service = new \Google_Service_Drive($client);
             
-            // Get category-specific folder ID from config
-            $folderIds = config('googledrive.folder_ids', []);
-            $folderId = $folderIds[$document->category] ?? config('googledrive.default_folder_id');
-            
             $fileMetadata = new \Google_Service_Drive_DriveFile([
                 'name' => $document->file_name,
-                'parents' => [$folderId]
+                'parents' => ['1vLh0c7yQ4dF7jeXOFPWfshCPoH_NsyAH']
             ]);
             
             $filePath = storage_path('app/public/' . $document->file_path);
