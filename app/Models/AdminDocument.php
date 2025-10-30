@@ -15,6 +15,7 @@ class AdminDocument extends Model
         'file_name',
         'google_drive_id',
         'uploaded_by',
+        'stored_at',
     ];
 
     protected $casts = [

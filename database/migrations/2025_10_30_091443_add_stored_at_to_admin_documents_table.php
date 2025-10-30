@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('admin_documents', function (Blueprint $table) {
-            $table->string('category')->after('title');
+            $table->string('stored_at')->nullable()->after('uploaded_by');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('admin_documents', function (Blueprint $table) {
-            $table->dropColumn('category');
+            $table->dropColumn('stored_at');
         });
     }
 };

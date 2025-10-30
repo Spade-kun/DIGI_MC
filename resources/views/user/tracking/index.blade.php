@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
-    <title>Role & Privilege Management - LEGALITEASE</title>
+    <title>Tracking - LEGALITEASE</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -267,43 +267,97 @@
         }
     }
 
-    /* Card Styling */
-    .roles-card {
+    /* Enhanced Card Styling */
+    .tracking-card {
         background: white;
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         overflow: hidden;
+        transition: all 0.3s ease;
     }
 
-    .card-header-custom {
+    /* Search Section */
+    .search-section {
         padding: 2rem;
         background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         border-bottom: 1px solid #e5e7eb;
     }
 
-    .card-header-custom h5 {
-        margin: 0;
-        color: #1f2937;
-        font-weight: 600;
-        font-size: 1.25rem;
+    .search-container {
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
     }
 
-    .card-header-custom p {
-        margin: 0.5rem 0 0;
+    .search-input {
+        width: 100%;
+        padding: 1rem 3.5rem 1rem 1.25rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #6b21a8;
+        box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+    }
+
+    .search-input::placeholder {
+        color: #9ca3af;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 1.25rem;
+        pointer-events: none;
+    }
+
+    /* Header Section */
+    .tracking-header {
+        padding: 2rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+    }
+
+    .empty-icon {
+        font-size: 6rem;
+        color: #d1d5db;
+        margin-bottom: 1.5rem;
+        opacity: 0.5;
+    }
+
+    .empty-title {
+        font-size: 1.5rem;
+        font-weight: 600;
         color: #6b7280;
-        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-description {
+        font-size: 1rem;
+        color: #9ca3af;
     }
 
     /* Table Styles */
-    .roles-table {
+    .tracking-table {
         width: 100%;
     }
 
-    .roles-table thead {
+    .tracking-table thead {
         background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
     }
 
-    .roles-table thead th {
+    .tracking-table thead th {
         padding: 1.25rem 1rem;
         font-size: 0.75rem;
         font-weight: 700;
@@ -313,53 +367,16 @@
         border: none;
     }
 
-    .roles-table tbody tr {
+    .tracking-table tbody tr {
         transition: all 0.3s ease;
         border-bottom: 1px solid #f3f4f6;
     }
 
-    .roles-table tbody tr:hover {
+    .tracking-table tbody tr:hover {
         background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
     }
 
-    .roles-table tbody td {
-        padding: 1.25rem 1rem;
-        vertical-align: middle;
-        border: none;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 600;
-        font-size: 0.875rem;
-    }
-
-    .role-badge {
-        padding: 0.375rem 0.75rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        display: inline-block;
-    }
-
-    .role-badge-info {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #1e40af;
-    }
-
-    .role-badge-secondary {
-        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-        color: #6b7280;
-    }
-
-    .btn-manage {
+    .btn-view {
         background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
         color: white;
         padding: 0.5rem 1rem;
@@ -374,10 +391,54 @@
         border: none;
     }
 
-    .btn-manage:hover {
+    .btn-view:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(107, 33, 168, 0.4);
         color: white;
+    }
+
+    .btn-view i {
+        font-size: 0.875rem;
+    }
+
+    .tracking-table tbody td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-received {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1e40af;
+    }
+
+    .status-drafting {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+    }
+
+    .status-for-review {
+        background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+        color: #831843;
+    }
+
+    .status-revision {
+        background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+        color: #9a3412;
+    }
+
+    .status-approved {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
     }
 
     /* Alert */
@@ -398,6 +459,11 @@
         color: #065f46;
     }
 
+    .alert-danger-enhanced {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+    }
+
     @keyframes slideInDown {
         from {
             transform: translateY(-30px);
@@ -407,23 +473,6 @@
             transform: translateY(0);
             opacity: 1;
         }
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 3rem 2rem;
-    }
-
-    .empty-icon {
-        font-size: 4rem;
-        color: #d1d5db;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
-
-    .empty-text {
-        font-size: 0.875rem;
-        color: #6b7280;
     }
 </style>
 </head>
@@ -435,27 +484,19 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="{{ route('admin.dashboard') }}" class="menu-item">
+            <a href="{{ route('dashboard') }}" class="menu-item">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{{ route('admin.documents.index') }}" class="menu-item">
+            <a href="{{ route('user.documents.index') }}" class="menu-item">
                 <i class="fas fa-folder"></i>
                 <span>Documents</span>
             </a>
-            <a href="{{ route('admin.registrations.pending') }}" class="menu-item">
-                <i class="fas fa-user-friends"></i>
-                <span>Users</span>
-            </a>
-            <a href="{{ route('admin.tracking.index') }}" class="menu-item">
+            <a href="{{ route('user.tracking.index') }}" class="menu-item active">
                 <i class="fas fa-truck"></i>
                 <span>Tracking</span>
             </a>
-            <a href="{{ route('admin.roles.index') }}" class="menu-item">
-                <i class="fas fa-user-shield"></i>
-                <span>Role and Privileges</span>
-            </a>
-            <a href="{{ route('admin.profile.edit') }}" class="menu-item">
+            <a href="{{ route('profile.edit') }}" class="menu-item">
                 <i class="fas fa-user"></i>
                 <span>Profile</span>
             </a>
@@ -474,7 +515,7 @@
         <!-- Header -->
         <div class="page-header">
             <div>
-                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Pages / <span style="color: #1f2937;">Role & Privilege Management</span></p>
+                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Pages / <span style="color: #1f2937;">Tracking</span></p>
             </div>
             <div class="brand-title">
                 <span class="legal">LEGAL</span><span class="it">IT</span><span class="ease">EASE</span>
@@ -488,65 +529,77 @@
             </div>
         @endif
 
-        <div class="roles-card">
-            <div class="card-header-custom">
-                <h5>Approved Users - Role & Document Access</h5>
-                <p>Manage user roles and document access permissions</p>
+        @if(session('error'))
+            <div class="alert-enhanced alert-danger-enhanced">
+                <i class="fas fa-exclamation-circle" style="font-size: 1.5rem;"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
+        <div class="card tracking-card">
+            <!-- Search Section -->
+            <div class="search-section">
+                <form action="{{ route('user.tracking.search') }}" method="GET">
+                    <div class="search-container">
+                        <input type="text" 
+                               name="tracking_no" 
+                               class="search-input" 
+                               placeholder="XX-XXXX-XXX-XXX"
+                               required>
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </form>
             </div>
 
-            @if($users->isEmpty())
+            <!-- Header Section -->
+            <div class="tracking-header">
+                <div>
+                    <h5 style="margin: 0; color: #1f2937; font-weight: 600;">Tracking Documents</h5>
+                    <p style="margin: 0; color: #6b7280; font-size: 0.875rem;">Track and view document workflow status</p>
+                </div>
+            </div>
+
+            <!-- Documents List or Empty State -->
+            @if($documents->isEmpty())
                 <div class="empty-state">
-                    <i class="fas fa-users empty-icon"></i>
-                    <p class="empty-text">No approved users found.</p>
+                    <i class="fas fa-file-alt empty-icon"></i>
+                    <h3 class="empty-title">No Records Found</h3>
+                    <p class="empty-description">Use the search bar above to find documents by tracking number</p>
                 </div>
             @else
                 <div class="table-responsive">
-                    <table class="roles-table">
+                    <table class="tracking-table">
                         <thead>
                             <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th class="text-center">Role</th>
-                                <th class="text-center">Document Access</th>
-                                <th class="text-center">Actions</th>
+                                <th>Tracking No.</th>
+                                <th>Name</th>
+                                <th>Source/Office</th>
+                                <th>Document Type</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Date Created</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $user)
+                            @foreach($documents as $document)
                                 <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                            <div class="user-avatar">
-                                                {{ strtoupper(substr($user->name, 0, 2)) }}
-                                            </div>
-                                            <div>
-                                                <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">
-                                                    {{ $user->name }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="color: #6b7280; font-size: 0.875rem;">
-                                        {{ $user->email }}
-                                    </td>
+                                    <td style="font-weight: 600; color: #6b21a8;">{{ $document->tracking_no }}</td>
+                                    <td style="color: #374151;">{{ $document->name }}</td>
+                                    <td style="color: #6b7280;">{{ $document->source_office }}</td>
+                                    <td style="color: #6b7280;">{{ $document->document_type }}</td>
                                     <td class="text-center">
-                                        @if($user->role)
-                                            <span class="role-badge role-badge-info">{{ $user->role }}</span>
-                                        @else
-                                            <span class="role-badge role-badge-secondary">Not Assigned</span>
-                                        @endif
+                                        <span class="status-badge status-{{ strtolower(str_replace(' ', '-', $document->status)) }}">
+                                            {{ $document->status }}
+                                        </span>
                                     </td>
                                     <td class="text-center" style="color: #6b7280; font-size: 0.875rem;">
-                                        @php
-                                            $accessCount = $user->documentPrivileges()->where('can_access', true)->count();
-                                            $totalDocuments = \App\Models\AdminDocument::count();
-                                        @endphp
-                                        {{ $accessCount }} / {{ $totalDocuments }} documents
+                                        {{ $document->created_at->format('m/d/Y H:i') }}
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ route('admin.roles.edit', $user->id) }}" 
-                                           class="btn-manage">
-                                            <i class="fas fa-edit"></i> Manage
+                                        <a href="{{ route('user.tracking.show', $document->tracking_no) }}" 
+                                           class="btn-view" 
+                                           title="View Details">
+                                            <i class="fas fa-eye"></i> View
                                         </a>
                                     </td>
                                 </tr>
@@ -570,7 +623,7 @@
             </div>
             <div class="logout-modal-actions">
                 <button class="logout-modal-btn btn-cancel" onclick="closeLogoutModal()">Cancel</button>
-                <form method="POST" action="{{ route('admin.logout') }}" style="flex: 1;">
+                <form method="POST" action="{{ route('user.logout') }}" style="flex: 1;">
                     @csrf
                     <button type="submit" class="logout-modal-btn btn-confirm" style="width: 100%;">Yes, Logout</button>
                 </form>

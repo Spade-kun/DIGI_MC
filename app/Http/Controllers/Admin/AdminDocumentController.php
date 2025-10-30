@@ -31,12 +31,12 @@ class AdminDocumentController extends Controller
     
     public function store(Request $request)
     {
-        $request->validate(['title' => 'required|string|max:255', 'case_no' => 'required|string|max:255', 'date_issued' => 'required|date', 'category' => 'required|string|in:Republic Act,Memorandum,Proclamations', 'file' => 'required|file|mimes:pdf|max:10240']);
+        $request->validate(['title' => 'required|string|max:255', 'case_no' => 'required|string|max:255', 'date_issued' => 'required|date', 'category' => 'required|string|in:Republic Act,Memorandum,Proclamations', 'file' => 'required|file|mimes:pdf|max:10240', 'stored_at' => 'nullable|string|max:255']);
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('admin_documents', $fileName, 'public');
-            $document = AdminDocument::create(['title' => $request->title, 'case_no' => $request->case_no, 'date_issued' => $request->date_issued, 'category' => $request->category, 'file_path' => $filePath, 'file_name' => $fileName, 'uploaded_by' => Auth::guard('admin')->user()->email]);
+            $document = AdminDocument::create(['title' => $request->title, 'case_no' => $request->case_no, 'date_issued' => $request->date_issued, 'category' => $request->category, 'file_path' => $filePath, 'file_name' => $fileName, 'uploaded_by' => Auth::guard('admin')->user()->email, 'stored_at' => $request->stored_at]);
             try {
                 $googleDriveId = $this->uploadToGoogleDrive($document);
                 if ($googleDriveId) { $document->google_drive_id = $googleDriveId; $document->save(); }
@@ -48,8 +48,8 @@ class AdminDocumentController extends Controller
     
     public function update(Request $request, AdminDocument $document)
     {
-        $request->validate(['title' => 'required|string|max:255', 'case_no' => 'required|string|max:255', 'date_issued' => 'required|date']);
-        $document->update(['title' => $request->title, 'case_no' => $request->case_no, 'date_issued' => $request->date_issued]);
+        $request->validate(['title' => 'required|string|max:255', 'case_no' => 'required|string|max:255', 'date_issued' => 'required|date', 'stored_at' => 'nullable|string|max:255']);
+        $document->update(['title' => $request->title, 'case_no' => $request->case_no, 'date_issued' => $request->date_issued, 'stored_at' => $request->stored_at]);
         return redirect()->route('admin.documents.category', $document->category)->with('success', 'Document updated successfully!');
     }
     

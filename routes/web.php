@@ -88,6 +88,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{document}', [App\Http\Controllers\User\UserDocumentController::class, 'destroy'])->name('destroy');
     });
     
+    // User Tracking Routes
+    Route::prefix('user/tracking')->name('user.tracking.')->group(function () {
+        Route::get('/', [App\Http\Controllers\User\UserTrackingController::class, 'index'])->name('index');
+        Route::get('/search', [App\Http\Controllers\User\UserTrackingController::class, 'search'])->name('search');
+        Route::get('/{trackingNo}', [App\Http\Controllers\User\UserTrackingController::class, 'show'])->name('show');
+    });
+    
     // Dialogflow Chatbot API
     Route::post('/api/dialogflow', [App\Http\Controllers\Api\DialogflowController::class, 'handleMessage'])->name('api.dialogflow');
 });
@@ -151,6 +158,16 @@ Route::prefix('admin')->group(function () {
             Route::put('/{document}/update', [App\Http\Controllers\Admin\AdminDocumentController::class, 'update'])->name('update');
             Route::delete('/{document}', [App\Http\Controllers\Admin\AdminDocumentController::class, 'destroy'])->name('destroy');
             Route::get('/{document}/download', [App\Http\Controllers\Admin\AdminDocumentController::class, 'download'])->name('download');
+        });
+        
+        // Tracking Management Routes
+        Route::prefix('tracking')->name('admin.tracking.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\TrackingController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\Admin\TrackingController::class, 'store'])->name('store');
+            Route::get('/search', [App\Http\Controllers\Admin\TrackingController::class, 'search'])->name('search');
+            Route::get('/{id}', [App\Http\Controllers\Admin\TrackingController::class, 'show'])->name('show');
+            Route::put('/{id}/update-status', [App\Http\Controllers\Admin\TrackingController::class, 'updateStatus'])->name('update-status');
+            Route::delete('/{id}', [App\Http\Controllers\Admin\TrackingController::class, 'destroy'])->name('destroy');
         });
         
         // Admin Profile Routes

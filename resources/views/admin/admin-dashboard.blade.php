@@ -441,10 +441,15 @@
                 <i class="fas fa-user-friends"></i>
                 <span>Users</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="{{ route('admin.tracking.index') }}" class="menu-item">
                 <i class="fas fa-truck"></i>
                 <span>Tracking</span>
             </a>
+            <a href="{{ route('admin.roles.index') }}" class="menu-item">
+                <i class="fas fa-user-shield"></i>
+                <span>Role and Privileges</span>
+            </a>
+            
             <a href="{{ route('admin.profile.edit') }}" class="menu-item">
                 <i class="fas fa-user"></i>
                 <span>Profile</span>

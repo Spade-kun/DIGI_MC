@@ -479,11 +479,11 @@
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{{ route('user.documents.index') }}" class="menu-item active">
+            <a href="{{ route('user.documents.index') }}" class="menu-item">
                 <i class="fas fa-folder"></i>
                 <span>Documents</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="{{ route('user.tracking.index') }}" class="menu-item">
                 <i class="fas fa-truck"></i>
                 <span>Tracking</span>
             </a>

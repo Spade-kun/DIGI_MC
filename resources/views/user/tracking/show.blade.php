@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
-    <title>Role & Privilege Management - LEGALITEASE</title>
+    <title>Tracking Details - LEGALITEASE</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -268,116 +268,209 @@
     }
 
     /* Card Styling */
-    .roles-card {
+    .tracking-detail-card {
         background: white;
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         overflow: hidden;
     }
 
-    .card-header-custom {
+    /* Search Bar */
+    .search-bar {
         padding: 2rem;
         background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         border-bottom: 1px solid #e5e7eb;
-    }
-
-    .card-header-custom h5 {
-        margin: 0;
-        color: #1f2937;
-        font-weight: 600;
-        font-size: 1.25rem;
-    }
-
-    .card-header-custom p {
-        margin: 0.5rem 0 0;
-        color: #6b7280;
-        font-size: 0.875rem;
-    }
-
-    /* Table Styles */
-    .roles-table {
-        width: 100%;
-    }
-
-    .roles-table thead {
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-    }
-
-    .roles-table thead th {
-        padding: 1.25rem 1rem;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #6b21a8;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border: none;
-    }
-
-    .roles-table tbody tr {
-        transition: all 0.3s ease;
-        border-bottom: 1px solid #f3f4f6;
-    }
-
-    .roles-table tbody tr:hover {
-        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-    }
-
-    .roles-table tbody td {
-        padding: 1.25rem 1rem;
-        vertical-align: middle;
-        border: none;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
-        border-radius: 50%;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 600;
-        font-size: 0.875rem;
+        gap: 1rem;
     }
 
-    .role-badge {
-        padding: 0.375rem 0.75rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        display: inline-block;
+    .search-input-group {
+        max-width: 400px;
+        position: relative;
+        flex: 1;
     }
 
-    .role-badge-info {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #1e40af;
-    }
-
-    .role-badge-secondary {
-        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-        color: #6b7280;
-    }
-
-    .btn-manage {
+    .back-to-tracking {
         background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
         color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-size: 0.875rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
         font-weight: 600;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         transition: all 0.3s ease;
-        border: none;
+        white-space: nowrap;
     }
 
-    .btn-manage:hover {
+    .back-to-tracking:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(107, 33, 168, 0.4);
+        box-shadow: 0 6px 20px rgba(107, 33, 168, 0.4);
         color: white;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem 2.5rem 0.75rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 0.9rem;
+    }
+
+    .copy-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6b7280;
+        transition: color 0.3s;
+    }
+
+    .copy-icon:hover {
+        color: #6b21a8;
+    }
+
+    /* Content Layout */
+    .tracking-content {
+        display: flex;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .document-info-section {
+        flex: 1;
+        max-width: 600px;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 2rem;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .info-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        padding: 0.75rem;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        color: #374151;
+        font-size: 0.875rem;
+    }
+
+    /* Timeline Section */
+    .timeline-section {
+        flex: 1;
+        max-width: 500px;
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 2rem;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0.625rem;
+        top: 2.5rem;
+        bottom: 0;
+        width: 2px;
+        background: #e5e7eb;
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    .timeline-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .timeline-dot {
+        position: absolute;
+        left: -1.875rem;
+        top: 0.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .timeline-dot.active {
+        background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
+    }
+
+    .timeline-dot.inactive {
+        background: #d1d5db;
+    }
+
+    .timeline-content {
+        background: #f9fafb;
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 3px solid #6b21a8;
+    }
+
+    .timeline-date {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+    }
+
+    .timeline-status {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .tracking-content {
+            flex-direction: column;
+        }
+
+        .document-info-section,
+        .timeline-section {
+            max-width: 100%;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* Alert */
@@ -408,23 +501,6 @@
             opacity: 1;
         }
     }
-
-    .empty-state {
-        text-align: center;
-        padding: 3rem 2rem;
-    }
-
-    .empty-icon {
-        font-size: 4rem;
-        color: #d1d5db;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
-
-    .empty-text {
-        font-size: 0.875rem;
-        color: #6b7280;
-    }
 </style>
 </head>
 <body>
@@ -435,27 +511,19 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="{{ route('admin.dashboard') }}" class="menu-item">
+            <a href="{{ route('dashboard') }}" class="menu-item">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{{ route('admin.documents.index') }}" class="menu-item">
+            <a href="{{ route('user.documents.index') }}" class="menu-item">
                 <i class="fas fa-folder"></i>
                 <span>Documents</span>
             </a>
-            <a href="{{ route('admin.registrations.pending') }}" class="menu-item">
-                <i class="fas fa-user-friends"></i>
-                <span>Users</span>
-            </a>
-            <a href="{{ route('admin.tracking.index') }}" class="menu-item">
+            <a href="{{ route('user.tracking.show', $document->tracking_no) }}" class="menu-item active">
                 <i class="fas fa-truck"></i>
                 <span>Tracking</span>
             </a>
-            <a href="{{ route('admin.roles.index') }}" class="menu-item">
-                <i class="fas fa-user-shield"></i>
-                <span>Role and Privileges</span>
-            </a>
-            <a href="{{ route('admin.profile.edit') }}" class="menu-item">
+            <a href="{{ route('profile.edit') }}" class="menu-item">
                 <i class="fas fa-user"></i>
                 <span>Profile</span>
             </a>
@@ -474,7 +542,7 @@
         <!-- Header -->
         <div class="page-header">
             <div>
-                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Pages / <span style="color: #1f2937;">Role & Privilege Management</span></p>
+                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Pages / <span style="color: #1f2937;">Tracking Details</span></p>
             </div>
             <div class="brand-title">
                 <span class="legal">LEGAL</span><span class="it">IT</span><span class="ease">EASE</span>
@@ -488,73 +556,80 @@
             </div>
         @endif
 
-        <div class="roles-card">
-            <div class="card-header-custom">
-                <h5>Approved Users - Role & Document Access</h5>
-                <p>Manage user roles and document access permissions</p>
+        <div class="card tracking-detail-card">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <div class="search-input-group">
+                    <input type="text" 
+                           class="search-input" 
+                           value="{{ $document->tracking_no }}" 
+                           readonly 
+                           id="trackingNumber">
+                    <i class="fas fa-copy copy-icon" onclick="copyTrackingNumber()" title="Copy tracking number"></i>
+                </div>
+                <a href="{{ route('user.tracking.index') }}" class="back-to-tracking">
+                    <i class="fas fa-arrow-left"></i> Back to Tracking
+                </a>
             </div>
 
-            @if($users->isEmpty())
-                <div class="empty-state">
-                    <i class="fas fa-users empty-icon"></i>
-                    <p class="empty-text">No approved users found.</p>
+            <!-- Content -->
+            <div class="tracking-content">
+                <!-- Document Information -->
+                <div class="document-info-section">
+                    <h2 class="section-title">Document Information</h2>
+                    <p class="section-subtitle">Track your document in real time</p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label class="info-label">Tracking No.</label>
+                            <div class="info-value">{{ $document->tracking_no }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">Status:</label>
+                            <div class="info-value">{{ $document->status }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">Source/Office</label>
+                            <div class="info-value">{{ $document->source_office }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">Document Type:</label>
+                            <div class="info-value">{{ $document->document_type }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">Privacy:</label>
+                            <div class="info-value">{{ $document->privacy }}</div>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label">Created Date:</label>
+                            <div class="info-value">{{ $document->created_at->format('m/d/Y') }}</div>
+                        </div>
+                    </div>
                 </div>
-            @else
-                <div class="table-responsive">
-                    <table class="roles-table">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th class="text-center">Role</th>
-                                <th class="text-center">Document Access</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($users as $user)
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                            <div class="user-avatar">
-                                                {{ strtoupper(substr($user->name, 0, 2)) }}
-                                            </div>
-                                            <div>
-                                                <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">
-                                                    {{ $user->name }}
-                                                </div>
-                                            </div>
+
+                <!-- Timeline -->
+                <div class="timeline-section">
+                    <h2 class="section-title">Status History</h2>
+                    <p class="section-subtitle">Document workflow timeline</p>
+
+                    <div class="timeline">
+                        @foreach($document->histories()->orderBy('created_at', 'desc')->get() as $history)
+                            <div class="timeline-item">
+                                <div class="timeline-dot {{ $loop->first ? 'active' : 'inactive' }}"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">{{ $history->created_at->format('m/d/Y  H:i') }}</div>
+                                    <div class="timeline-status">{{ $history->status }}</div>
+                                    @if($history->remarks)
+                                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #6b7280;">
+                                            {{ $history->remarks }}
                                         </div>
-                                    </td>
-                                    <td style="color: #6b7280; font-size: 0.875rem;">
-                                        {{ $user->email }}
-                                    </td>
-                                    <td class="text-center">
-                                        @if($user->role)
-                                            <span class="role-badge role-badge-info">{{ $user->role }}</span>
-                                        @else
-                                            <span class="role-badge role-badge-secondary">Not Assigned</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-center" style="color: #6b7280; font-size: 0.875rem;">
-                                        @php
-                                            $accessCount = $user->documentPrivileges()->where('can_access', true)->count();
-                                            $totalDocuments = \App\Models\AdminDocument::count();
-                                        @endphp
-                                        {{ $accessCount }} / {{ $totalDocuments }} documents
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ route('admin.roles.edit', $user->id) }}" 
-                                           class="btn-manage">
-                                            <i class="fas fa-edit"></i> Manage
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            @endif
+            </div>
         </div>
     </div>
 
@@ -570,7 +645,7 @@
             </div>
             <div class="logout-modal-actions">
                 <button class="logout-modal-btn btn-cancel" onclick="closeLogoutModal()">Cancel</button>
-                <form method="POST" action="{{ route('admin.logout') }}" style="flex: 1;">
+                <form method="POST" action="{{ route('user.logout') }}" style="flex: 1;">
                     @csrf
                     <button type="submit" class="logout-modal-btn btn-confirm" style="width: 100%;">Yes, Logout</button>
                 </form>
@@ -596,6 +671,24 @@ document.getElementById('logoutModal').addEventListener('click', function(e) {
         closeLogoutModal();
     }
 });
+
+function copyTrackingNumber() {
+    const input = document.getElementById('trackingNumber');
+    input.select();
+    input.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    
+    // Show tooltip or alert
+    const icon = document.querySelector('.copy-icon');
+    const originalClass = icon.className;
+    icon.className = 'fas fa-check copy-icon';
+    icon.style.color = '#10b981';
+    
+    setTimeout(() => {
+        icon.className = originalClass;
+        icon.style.color = '#6b7280';
+    }, 2000);
+}
 
 // Auto-dismiss alerts
 setTimeout(function() {

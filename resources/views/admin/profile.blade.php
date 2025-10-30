@@ -215,6 +215,15 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
+        .profile-role {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #f3e8ff;
+            color: #6b21a8;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
 
         /* Form Section */
         .form-section {
@@ -494,9 +503,13 @@
                 <i class="fas fa-user-friends"></i>
                 <span>Users</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="{{ route('admin.tracking.index') }}" class="menu-item">
                 <i class="fas fa-truck"></i>
                 <span>Tracking</span>
+            </a>
+            <a href="{{ route('admin.roles.index') }}" class="menu-item">
+                <i class="fas fa-user-shield"></i>
+                <span>Role and Privileges</span>
             </a>
             <a href="{{ route('admin.profile.edit') }}" class="menu-item active">
                 <i class="fas fa-user"></i>
@@ -547,7 +560,9 @@
                     {{ strtoupper(substr($admin->name, 0, 2)) }}
                 </div>
                 <h2 class="profile-name">{{ $admin->name }}</h2>
-                <p class="profile-role">Administrator</p>
+                <span class="profile-role">
+                    <i class="fas fa-user-circle"></i> Admin
+                </span>
                 <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">
                     <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
                     {{ $admin->email }}
@@ -583,7 +598,7 @@
                         <div class="form-group">
                             <label class="form-label" for="name">Name</label>
                             <input 
-                                type="text" disabled
+                                type="text" readonly
                                 id="name" 
                                 name="name" 
                                 class="form-input" 
@@ -598,7 +613,7 @@
                         <div class="form-group">
                             <label class="form-label" for="email">Email</label>
                             <input 
-                                type="email" disabled
+                                type="email" readonly
                                 id="email" 
                                 name="email" 
                                 class="form-input" 

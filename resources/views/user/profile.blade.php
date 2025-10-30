@@ -547,7 +547,7 @@
                 <h2 class="profile-name">{{ $user->name }}</h2>
                 <p class="profile-email">{{ $user->email }}</p>
                 <span class="profile-role">
-                    <i class="fas fa-user-circle"></i> User
+                    <i class="fas fa-user-circle"></i> {{ $user->role }}
                 </span>
             </div>
 
@@ -564,7 +564,7 @@
 
                     <div class="form-group">
                         <label for="name" class="form-label">Name <span class="required">*</span></label>
-                        <input type="text" disabled
+                        <input type="text" readonly
                                class="form-control" 
                                id="name" 
                                name="name" 
@@ -577,7 +577,7 @@
 
                     <div class="form-group">
                         <label for="email" class="form-label">Email <span class="required">*</span></label>
-                        <input type="email" disabled
+                        <input type="email" readonly
                                class="form-control" 
                                id="email" 
                                name="email" 
@@ -587,6 +587,7 @@
                             <small style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; display: block;">{{ $message }}</small>
                         @enderror
                     </div>
+                   
 
                     @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                     <div class="info-box">

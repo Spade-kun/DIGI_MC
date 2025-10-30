@@ -56,44 +56,6 @@
         </li>
         @endif
         @if(Auth::guard('admin')->check())
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">User Management</h6>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.registrations.pending') ? 'active' : '' }}" href="{{ route('admin.registrations.pending') }}">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-time-alarm text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Pending Users</span>
-            @if($pendingCount = \App\Models\User::where('status', 'pending')->count())
-            <span class="badge badge-sm bg-gradient-warning ms-auto">{{ $pendingCount }}</span>
-            @endif
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.registrations.approved') ? 'active' : '' }}" href="{{ route('admin.registrations.approved') }}">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-check-bold text-success text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Approved Users</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.registrations.rejected') ? 'active' : '' }}" href="{{ route('admin.registrations.rejected') }}">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-fat-remove text-danger text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Rejected Users</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-key-25 text-info text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Role & Privilege</span>
-          </a>
-        </li>
         <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.gazette.*') ? 'active' : '' }}" href="{{ route('admin.gazette.index') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -108,6 +70,38 @@
               <i class="ni ni-folder-17 text-warning text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Documents</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.registrations.*', 'admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.registrations.pending') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-single-02 text-info text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.privileges.*') ? 'active' : '' }}" href="{{ route('admin.privileges.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-lock-circle-open text-danger text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Privileges</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.tracking.*') ? 'active' : '' }}" href="{{ route('admin.tracking.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-delivery-fast text-success text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Tracking</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}" href="{{ route('admin.profile.edit') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-circle-08 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Profile</span>
           </a>
         </li>
         @endif
