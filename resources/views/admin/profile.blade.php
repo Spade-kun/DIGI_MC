@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
-    <title>Admin Dashboard - LEGALITEASE</title>
+    <title>Profile - LEGALITEASE</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -127,12 +127,6 @@
             margin-bottom: 2rem;
         }
 
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1f2937;
-        }
-
         .brand-title {
             font-size: 1.5rem;
             font-weight: 700;
@@ -151,154 +145,203 @@
             color: #6b21a8;
         }
 
-        /* Stats Cards */
-        .stats-grid {
+        /* Profile Container */
+        .profile-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
         }
 
-        .stat-card {
+        /* Profile Card */
+        .profile-card {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            text-align: center;
+            height: fit-content;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-card-content {
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
         }
 
-        .stat-info h3 {
-            font-size: 0.875rem;
+        .profile-name {
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #6b7280;
+            color: #1f2937;
             margin-bottom: 0.5rem;
         }
 
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1f2937;
+        .profile-role {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
         }
 
-        .stat-change {
-            color: #10b981;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6b21a8;
+            margin-bottom: 0.25rem;
         }
 
         .stat-label {
             font-size: 0.75rem;
             color: #6b7280;
-            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            background: #6b21a8;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        /* Search Section */
-        .search-section {
+        /* Form Section */
+        .form-section {
             background: white;
             border-radius: 12px;
             padding: 2rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        .search-section h2 {
-            font-size: 1.125rem;
+        .form-section h2 {
+            font-size: 1.25rem;
             font-weight: 600;
             color: #1f2937;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
-        .search-box {
-            position: relative;
+        .form-section .subtitle {
+            font-size: 0.875rem;
+            color: #6b7280;
             margin-bottom: 2rem;
         }
 
-        .search-input {
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
             width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
+            padding: 0.75rem 1rem;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             font-size: 0.95rem;
             transition: all 0.3s;
         }
 
-        .search-input:focus {
+        .form-input:focus {
             outline: none;
             border-color: #6b21a8;
             box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
         }
 
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
+        .form-input:disabled {
+            background: #f9fafb;
+            cursor: not-allowed;
         }
 
-        .suggested-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 1rem;
-        }
-
-        .document-types {
+        .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
 
-        .doc-type-card {
-            border: 1px solid #e5e7eb;
+        .btn-primary {
+            padding: 0.75rem 2rem;
+            background: #6b21a8;
+            color: white;
+            border: none;
             border-radius: 8px;
-            padding: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
-        }
-
-        .doc-type-card:hover {
-            background: #f9fafb;
-            border-color: #6b21a8;
-        }
-
-        .doc-type-card h4 {
             font-size: 0.95rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 0.25rem;
         }
 
-        .doc-type-card p {
-            font-size: 0.8rem;
+        .btn-primary:hover {
+            background: #7c3aed;
+        }
+
+        .btn-secondary {
+            padding: 0.75rem 2rem;
+            background: white;
             color: #6b7280;
-            margin: 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 2rem 0;
+        }
+
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
         }
 
         /* Logout Modal */
@@ -405,6 +448,12 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -418,6 +467,10 @@
             .main-content {
                 margin-left: 0;
             }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -429,7 +482,7 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="{{ route('admin.dashboard') }}" class="menu-item active">
+            <a href="{{ route('admin.dashboard') }}" class="menu-item">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
@@ -445,7 +498,7 @@
                 <i class="fas fa-truck"></i>
                 <span>Tracking</span>
             </a>
-            <a href="{{ route('admin.profile.edit') }}" class="menu-item">
+            <a href="{{ route('admin.profile.edit') }}" class="menu-item active">
                 <i class="fas fa-user"></i>
                 <span>Profile</span>
             </a>
@@ -464,94 +517,167 @@
         <!-- Header -->
         <div class="page-header">
             <div>
-                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Pages / <span style="color: #1f2937;">Dashboard</span></p>
+                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Pages / <span style="color: #1f2937;">Profile</span></p>
             </div>
             <div class="brand-title">
                 <span class="legal">LEGAL</span><span class="it">IT</span><span class="ease">EASE</span>
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-card-content">
-                    <div class="stat-info">
-                        <h3>Total Documents</h3>
-                        <div>
-                            <span class="stat-value">{{ \App\Models\AdminDocument::count() }}</span>
-                            <span class="stat-change">+25</span>
-                        </div>
-                        <p class="stat-label">+25 from last week</p>
-                    </div>
-                    <div class="stat-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                </div>
-            </div>
-
-            <a href="{{ route('admin.registrations.pending') }}" class="stat-card">
-                <div class="stat-card-content">
-                    <div class="stat-info">
-                        <h3>Pending Request</h3>
-                        <div>
-                            <span class="stat-value">{{ \App\Models\User::where('status', 'pending')->count() }}</span>
-                            <span class="stat-change">+{{ \App\Models\User::where('status', 'pending')->count() }}</span>
-                        </div>
-                        <p class="stat-label">+{{ \App\Models\User::where('status', 'pending')->count() }} from last week</p>
-                    </div>
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="{{ route('admin.registrations.approved') }}" class="stat-card">
-                <div class="stat-card-content">
-                    <div class="stat-info">
-                        <h3>Fulfilled Requests</h3>
-                        <div>
-                            <span class="stat-value">{{ \App\Models\User::where('status', 'approved')->count() }}</span>
-                            <span class="stat-change">+{{ \App\Models\User::where('status', 'approved')->count() }}</span>
-                        </div>
-                        <p class="stat-label">+{{ \App\Models\User::where('status', 'approved')->count() }} from last week</p>
-                    </div>
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-            </a>
+        <!-- Success/Error Messages -->
+        @if(session('success'))
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
         </div>
+        @endif
 
-        <!-- Search Section -->
-        <div class="search-section">
-            <h2>Search Documents</h2>
-            
-            <div class="search-box">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Search">
+        @if($errors->any())
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>There were some errors with your submission.</span>
+        </div>
+        @endif
+
+        <!-- Profile Container -->
+        <div class="profile-container">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    {{ strtoupper(substr($admin->name, 0, 2)) }}
+                </div>
+                <h2 class="profile-name">{{ $admin->name }}</h2>
+                <p class="profile-role">Administrator</p>
+                <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                    <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
+                    {{ $admin->email }}
+                </p>
+                <p style="color: #6b7280; font-size: 0.875rem;">
+                    <i class="fas fa-calendar" style="margin-right: 0.5rem;"></i>
+                    Joined {{ $admin->created_at->format('M d, Y') }}
+                </p>
+
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ \App\Models\User::count() }}</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ \App\Models\AdminDocument::count() }}</div>
+                        <div class="stat-label">Documents</div>
+                    </div>
+                </div>
             </div>
 
-            <h3 class="suggested-title">Suggested Document Types</h3>
-            <div class="document-types">
-                <div class="doc-type-card">
-                    <h4>Memorandum of Agreements</h4>
-                    <p style="color: #9ca3af; font-size: 0.75rem; margin: 0.25rem 0;">Suggested Document Types</p>
-                    <p style="color: #9ca3af; font-size: 0.75rem;">200 accessed this week</p>
+            <!-- Forms Section -->
+            <div>
+                <!-- Profile Information Form -->
+                <div class="form-section">
+                    <h2>Profile Information</h2>
+                    <p class="subtitle">Update your account's profile information and email address.</p>
+
+                    <form method="POST" action="{{ route('admin.profile.update') }}">
+                        @csrf
+                        @method('PATCH')
+
+                        <div class="form-group">
+                            <label class="form-label" for="name">Name</label>
+                            <input 
+                                type="text" disabled
+                                id="name" 
+                                name="name" 
+                                class="form-input" 
+                                value="{{ old('name', $admin->name) }}" 
+                                required
+                            >
+                            @error('name')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input 
+                                type="email" disabled
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                value="{{ old('email', $admin->email) }}" 
+                                required
+                            >
+                            @error('email')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-save" style="margin-right: 0.5rem;"></i>
+                                Save Changes
+                            </button>
+                        </div> -->
+                    </form>
                 </div>
-                <div class="doc-type-card">
-                    <h4>Memorandum of Agreements</h4>
-                    <p style="color: #9ca3af; font-size: 0.75rem; margin: 0.25rem 0;">Suggested Document Types</p>
-                    <p style="color: #9ca3af; font-size: 0.75rem;">200 accessed this week</p>
-                </div>
-                <div class="doc-type-card">
-                    <h4>Memorandum of Agreements</h4>
-                    <p style="color: #9ca3af; font-size: 0.75rem; margin: 0.25rem 0;">Suggested Document Types</p>
-                    <p style="color: #9ca3af; font-size: 0.75rem;">200 accessed this week</p>
-                </div>
-                <div class="doc-type-card">
-                    <h4>Memorandum of Agreements</h4>
-                    <p style="color: #9ca3af; font-size: 0.75rem; margin: 0.25rem 0;">Suggested Document Types</p>
-                    <p style="color: #9ca3af; font-size: 0.75rem;">200 accessed this week</p>
+
+                <div style="height: 2rem;"></div>
+
+                <!-- Update Password Form -->
+                <div class="form-section">
+                    <h2>Update Password</h2>
+                    <p class="subtitle">Ensure your account is using a long, random password to stay secure.</p>
+
+                    <form method="POST" action="{{ route('admin.password.update') }}">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="form-group">
+                            <label class="form-label" for="current_password">Current Password</label>
+                            <input 
+                                type="password" 
+                                id="current_password" 
+                                name="current_password" 
+                                class="form-input" 
+                                required
+                            >
+                            @error('current_password')
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="password">New Password</label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    class="form-input" 
+                                    required
+                                >
+                                @error('password')
+                                    <p class="error-message">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="password_confirmation">Confirm Password</label>
+                                <input 
+                                    type="password" 
+                                    id="password_confirmation" 
+                                    name="password_confirmation" 
+                                    class="form-input" 
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-key" style="margin-right: 0.5rem;"></i>
+                                Update Password
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

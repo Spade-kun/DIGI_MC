@@ -152,6 +152,11 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{document}', [App\Http\Controllers\Admin\AdminDocumentController::class, 'destroy'])->name('destroy');
             Route::get('/{document}/download', [App\Http\Controllers\Admin\AdminDocumentController::class, 'download'])->name('download');
         });
+        
+        // Admin Profile Routes
+        Route::get('/profile', [App\Http\Controllers\Admin\AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+        Route::patch('/profile', [App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('admin.profile.update');
+        Route::put('/password', [App\Http\Controllers\Admin\AdminProfileController::class, 'updatePassword'])->name('admin.password.update');
     });
 });
 

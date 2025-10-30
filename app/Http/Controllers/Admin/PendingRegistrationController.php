@@ -13,31 +13,40 @@ class PendingRegistrationController extends Controller
 {
     public function pending()
     {
-        $users = User::where('status', 'pending')->latest()->get();
-        return view('admin.user-list', [
-            'users' => $users,
-            'title' => 'Pending Users',
-            'type' => 'pending'
+        $pendingUsers = User::where('status', 'pending')->latest()->get();
+        $approvedUsers = User::where('status', 'approved')->latest()->get();
+        $rejectedUsers = User::where('status', 'rejected')->latest()->get();
+        
+        return view('admin.users-management', [
+            'pendingUsers' => $pendingUsers,
+            'approvedUsers' => $approvedUsers,
+            'rejectedUsers' => $rejectedUsers
         ]);
     }
 
     public function approved()
     {
-        $users = User::where('status', 'approved')->latest()->get();
-        return view('admin.user-list', [
-            'users' => $users,
-            'title' => 'Approved Users',
-            'type' => 'approved'
+        $pendingUsers = User::where('status', 'pending')->latest()->get();
+        $approvedUsers = User::where('status', 'approved')->latest()->get();
+        $rejectedUsers = User::where('status', 'rejected')->latest()->get();
+        
+        return view('admin.users-management', [
+            'pendingUsers' => $pendingUsers,
+            'approvedUsers' => $approvedUsers,
+            'rejectedUsers' => $rejectedUsers
         ]);
     }
 
     public function rejected()
     {
-        $users = User::where('status', 'rejected')->latest()->get();
-        return view('admin.user-list', [
-            'users' => $users,
-            'title' => 'Rejected Users',
-            'type' => 'rejected'
+        $pendingUsers = User::where('status', 'pending')->latest()->get();
+        $approvedUsers = User::where('status', 'approved')->latest()->get();
+        $rejectedUsers = User::where('status', 'rejected')->latest()->get();
+        
+        return view('admin.users-management', [
+            'pendingUsers' => $pendingUsers,
+            'approvedUsers' => $approvedUsers,
+            'rejectedUsers' => $rejectedUsers
         ]);
     }
 

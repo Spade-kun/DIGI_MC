@@ -19,6 +19,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Share pending users count with admin views
+        view()->composer('layouts.dashboard', function ($view) {
+            $pendingCount = \App\Models\User::where('status', 'pending')->count();
+            $view->with('pendingCount', $pendingCount);
+        });
+        
+        view()->composer('admin.users.index', function ($view) {
+            // The counts are already passed from the controller
+            // This ensures the view always has access to them
+        });
     }
 }
