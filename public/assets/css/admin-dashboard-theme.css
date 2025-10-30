@@ -1,9 +1,12 @@
-/* Admin Dashboard visual theme overrides matching provided mockup */
+/* Admin Dashboard visual theme overrides matching logo colors */
 :root{
-  --brand: #56158B;
-  --bg-page: #f3f3f3;
-  --panel-bg: #ffffff;
-  --muted: #9aa0a6;
+  --brand: #56158B;         /* Primary Purple */
+  --brand-light: #6a1ba8;   /* Lighter Purple for hover */
+  --accent: #ffffff;        /* White accent */
+  --bg-page: #f5f5f7;      /* Light background */
+  --panel-bg: #ffffff;      /* White panels */
+  --text-dark: #2c2c2c;    /* Dark text color */
+  --muted: #6c6c6c;        /* Muted text */
 }
 
 /* Page background */
@@ -16,25 +19,75 @@ body {
   background: transparent !important;
   padding-top: 2.25rem;
 }
-.sidenav .navbar-brand-img{
-  width: 64px !important;
-  height: 64px !important;
-  border-radius: 50%;
+.sidenav .sidenav-header {
+  padding: 1rem;
 }
-.sidenav .navbar-nav .nav-item .nav-link{
-  display:flex; align-items:center; gap:1rem; padding:0.75rem 1rem; border-radius:12px; margin:0.75rem 0; background:#fff; box-shadow:0 6px 14px rgba(0,0,0,0.04); color:#333; border: none;
+.sidenav .sidenav-header .navbar-brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sidenav .navbar-brand-img {
+  width: 100% !important;
+  height: 100px !important;
+  max-width: 100% !important;
+  border-radius: 0 !important;
+  object-fit: contain !important;
+}
+.sidenav .navbar-nav .nav-item .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  background: var(--panel-bg);
+  box-shadow: 0 2px 6px rgba(86,21,139,0.08);
+  color: var(--text-dark);
+  border: 1px solid rgba(86,21,139,0.05);
+  transition: all 0.3s ease;
 }
 
-/* Active nav item - purple square */
-.sidenav .navbar-nav .nav-item .nav-link.active{
-  background: var(--bg-page) !important;
+.sidenav .navbar-nav .nav-item .nav-link:hover {
+  background: #f8f9fa;
+  box-shadow: 0 4px 12px rgba(86,21,139,0.12);
+  border-color: rgba(86,21,139,0.1);
+}
+
+/* Active nav item */
+.sidenav .navbar-nav .nav-item .nav-link.active {
+  background: var(--brand) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(86,21,139,0.25);
+  border-color: var(--brand);
+}
+
+.sidenav .navbar-nav .nav-item .nav-link .icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 2px 4px rgba(86,21,139,0.1);
+  color: var(--brand);
+}
+
+.sidenav .navbar-nav .nav-item .nav-link.active .icon {
+  background: var(--accent);
+  color: var(--brand) !important;
   box-shadow: none;
 }
-.sidenav .navbar-nav .nav-item .nav-link .icon{
-  width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#fff; box-shadow:0 6px 14px rgba(0,0,0,0.06);
+
+.sidenav .navbar-nav .nav-item .nav-link .nav-link-text {
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
-.sidenav .navbar-nav .nav-item .nav-link.active .icon{
-  background: var(--brand); color: #fff !important; box-shadow: none;
+
+.sidenav .navbar-nav .nav-item .nav-link.active .nav-link-text {
+  color: white;
 }
 
 /* Left logo area spacing */
@@ -73,7 +126,7 @@ body {
 .bg-gradient-primary,
 .icon.icon-shape.bg-gradient-primary,
 .bg-gradient-primary.shadow-primary {
-  background: linear-gradient(195deg, rgba(86,21,139,0.95), rgba(86,21,139,0.8)) !important;
+  background: linear-gradient(195deg, #56158B, #6a1ba8) !important;
   color: #fff !important;
 }
 

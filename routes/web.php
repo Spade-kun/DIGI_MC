@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\User\UserRegisterController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -93,6 +94,7 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('documents/data', [AdminController::class, 'getDocumentsData'])->name('admin.documents.data');
         
         // User Management Routes
         Route::get('users/pending', [App\Http\Controllers\Admin\PendingRegistrationController::class, 'pending'])->name('admin.registrations.pending');

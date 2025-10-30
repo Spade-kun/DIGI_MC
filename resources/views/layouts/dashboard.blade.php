@@ -20,7 +20,7 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css') }}" rel="stylesheet" />
   <!-- Admin dashboard visual overrides -->
-  <link href="{{ asset('assets/css/admin-dashboard-theme.css') }}" rel="stylesheet" />
+  <link href="{{ asset('assets/css/admin-dashboard-theme.css') }}?v=1.0.1" rel="stylesheet" />
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -28,9 +28,8 @@
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="#">
-        <img src="{{ asset('assets/img/logo-ct-dark.png') }}" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold">{{ config('app.name', 'Laravel') }}</span>
+      <a class="navbar-brand m-0 w-100" href="#">
+        <img src="{{ asset('assets/img/City-Legal-Office-1024x1024-1.png') }}" class="navbar-brand-img" alt="City Legal Office Logo">
       </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -67,9 +66,9 @@
         </li>
         @endif
         @if(Auth::guard('admin')->check())
-        <li class="nav-item mt-3">
+        <!-- <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">User Management</h6>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.registrations.pending') ? 'active' : '' }}" href="{{ route('admin.registrations.pending') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -166,7 +165,7 @@
                 © <script>
                   document.write(new Date().getFullYear())
                 </script>
-                {{ config('app.name', 'Laravel') }}
+                {{ config('app.name', 'LegalitEase') }}
               </div>
             </div>
           </div>
